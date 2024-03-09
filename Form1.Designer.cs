@@ -320,12 +320,12 @@ namespace CodeToTxt
 
                     if (wordCount >= maxWords)
                     {
-                        string textFileName = string.Join(", ", currentFileNames);
-                        string uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                        string textFileName = string.Join("_", currentFileNames.Select(GetSafeFileName));
+                        string uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
                         while (textFiles.ContainsKey(uniqueFileName))
                         {
                             fileCount++;
-                            uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                            uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
                         }
                         textFiles.Add(uniqueFileName, currentFile);
 
@@ -341,12 +341,12 @@ namespace CodeToTxt
 
             if (currentFile.Length > 0)
             {
-                string textFileName = string.Join(", ", currentFileNames);
-                string uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                string textFileName = string.Join("_", currentFileNames.Select(GetSafeFileName));
+                string uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
                 while (textFiles.ContainsKey(uniqueFileName))
                 {
                     fileCount++;
-                    uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                    uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
                 }
                 textFiles.Add(uniqueFileName, currentFile);
             }
@@ -358,6 +358,12 @@ namespace CodeToTxt
             }
         }
 
+        private string GetSafeFileName(string fileName)
+        {
+            string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            string safeFileName = new string(fileName.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray());
+            return safeFileName.Substring(0, Math.Min(safeFileName.Length, 50));
+        }
         private Label label2;
         private Label label3;
         private Label label4;
