@@ -311,12 +311,16 @@ namespace CodeToTxt
 
             foreach (var file in fileContents)
             {
-                string[] words = file.Value.Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = file.Value.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
-                foreach (string word in words)
+                currentFile.AppendLine($"***{Path.GetFileName(file.Key)}***");
+
+                foreach (string line in lines)
                 {
-                    currentFile.Append(word + " ");
-                    wordCount++;
+                    string[] words = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    wordCount += words.Length;
+
+                    currentFile.AppendLine(line);
 
                     if (wordCount >= maxWords)
                     {
@@ -336,6 +340,7 @@ namespace CodeToTxt
                     }
                 }
 
+                currentFile.AppendLine();
                 currentFileNames.Add(Path.GetFileName(file.Key));
             }
 
