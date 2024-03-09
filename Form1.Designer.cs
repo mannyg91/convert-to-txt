@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace CodeToTxt
@@ -173,6 +174,7 @@ namespace CodeToTxt
             label4.Size = new Size(825, 96);
             label4.TabIndex = 12;
             label4.Text = "Scans project files and combines code onto one or more .txt files split up by the desired amount of characters. Useful for code analysis when using LLM models.";
+            label4.Click += label4_Click;
             // 
             // label5
             // 
@@ -246,12 +248,11 @@ namespace CodeToTxt
 
         private void btnBrowseOutput_Click(object sender, EventArgs e)
         {
-            using (var saveFileDialog = new SaveFileDialog())
+            using (var folderBrowserDialog = new FolderBrowserDialog())
             {
-                saveFileDialog.Filter = "Text Files (*.txt)|*.txt";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
-                    txtOutputPath.Text = saveFileDialog.FileName;
+                    txtOutputPath.Text = folderBrowserDialog.SelectedPath;
                 }
             }
         }
@@ -259,45 +260,101 @@ namespace CodeToTxt
         private void btnScan_Click(object sender, EventArgs e)
         {
             string folderPath = txtFolderPath.Text;
-            string outputPath = txtOutputPath.Text;
+            string outputFolderPath = txtOutputPath.Text;
             int maxWords = (int)nudMaxWords.Value;
 
             bool scanHtml = chkHtml.Checked;
             bool scanCss = chkCss.Checked;
             bool scanJs = chkJs.Checked;
 
-            if (!string.IsNullOrEmpty(folderPath) && !string.IsNullOrEmpty(outputPath))
+            if (!string.IsNullOrEmpty(folderPath) && !string.IsNullOrEmpty(outputFolderPath))
             {
-                ScanFolder(folderPath, outputPath, maxWords, scanHtml, scanCss, scanJs);
-                MessageBox.Show("Scanning completed successfully!");
+                if (Directory.Exists(outputFolderPath))
+                {
+                    ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs);
+                    MessageBox.Show("Scanning completed successfully!");
+                }
+                else
+                {
+                    MessageBox.Show("Please select a valid output folder.");
+                }
             }
             else
             {
-                MessageBox.Show("Please select a folder and output file.");
+                MessageBox.Show("Please select a folder and output folder.");
             }
         }
 
-        private void ScanFolder(string folderPath, string outputPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs)
+        private void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs)
         {
-            using (var writer = new StreamWriter(outputPath))
+            var fileContents = new Dictionary<string, string>();
+            var fileNames = new List<string>();
+
+            foreach (string file in Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories))
             {
-                foreach (string file in Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories))
+                string extension = Path.GetExtension(file).ToLower();
+                if ((scanHtml && extension == ".html") ||
+                    (scanCss && extension == ".css") ||
+                    (scanJs && extension == ".js"))
                 {
-                    string extension = Path.GetExtension(file).ToLower();
-                    if ((scanHtml && extension == ".html") ||
-                        (scanCss && extension == ".css") ||
-                        (scanJs && extension == ".js"))
+                    string content = File.ReadAllText(file);
+                    fileContents.Add(file, content);
+                    fileNames.Add(Path.GetFileName(file));
+                }
+            }
+
+            var textFiles = new Dictionary<string, StringBuilder>();
+            var currentFile = new StringBuilder();
+            var currentFileNames = new List<string>();
+            int wordCount = 0;
+            int fileCount = 1;
+
+            foreach (var file in fileContents)
+            {
+                string[] words = file.Value.Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string word in words)
+                {
+                    currentFile.Append(word + " ");
+                    wordCount++;
+
+                    if (wordCount >= maxWords)
                     {
-                        string content = File.ReadAllText(file);
-                        string[] words = content.Split(new[] { ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (words.Length <= maxWords)
+                        string textFileName = string.Join(", ", currentFileNames);
+                        string uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                        while (textFiles.ContainsKey(uniqueFileName))
                         {
-                            writer.WriteLine($"--- {Path.GetFileName(file)} ---");
-                            writer.WriteLine(content);
-                            writer.WriteLine();
+                            fileCount++;
+                            uniqueFileName = $"{textFileName}_{fileCount}.txt";
                         }
+                        textFiles.Add(uniqueFileName, currentFile);
+
+                        currentFile = new StringBuilder();
+                        currentFileNames = new List<string>();
+                        wordCount = 0;
+                        fileCount++;
                     }
                 }
+
+                currentFileNames.Add(Path.GetFileName(file.Key));
+            }
+
+            if (currentFile.Length > 0)
+            {
+                string textFileName = string.Join(", ", currentFileNames);
+                string uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                while (textFiles.ContainsKey(uniqueFileName))
+                {
+                    fileCount++;
+                    uniqueFileName = $"{textFileName}_{fileCount}.txt";
+                }
+                textFiles.Add(uniqueFileName, currentFile);
+            }
+
+            foreach (var textFile in textFiles)
+            {
+                string outputPath = Path.Combine(outputFolderPath, textFile.Key);
+                File.WriteAllText(outputPath, textFile.Value.ToString());
             }
         }
 
