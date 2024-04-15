@@ -29,6 +29,9 @@ namespace CodeToTxt
             label6 = new Label();
             checkBox1 = new CheckBox();
             checkBox2 = new CheckBox();
+            label7 = new Label();
+            txtIgnoreFilePath = new TextBox();
+            btnBrowseIgnore = new Button();
             ((System.ComponentModel.ISupportInitialize)nudMaxWords).BeginInit();
             SuspendLayout();
             // 
@@ -114,7 +117,7 @@ namespace CodeToTxt
             // 
             // nudMaxWords
             // 
-            nudMaxWords.Location = new Point(316, 424);
+            nudMaxWords.Location = new Point(583, 502);
             nudMaxWords.Margin = new Padding(6, 7, 6, 7);
             nudMaxWords.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             nudMaxWords.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -127,7 +130,7 @@ namespace CodeToTxt
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(106, 424);
+            label1.Location = new Point(373, 502);
             label1.Margin = new Padding(6, 0, 6, 0);
             label1.Name = "label1";
             label1.Size = new Size(201, 32);
@@ -138,7 +141,7 @@ namespace CodeToTxt
             // 
             btnScan.BackColor = SystemColors.Highlight;
             btnScan.ForeColor = SystemColors.ButtonHighlight;
-            btnScan.Location = new Point(732, 417);
+            btnScan.Location = new Point(831, 490);
             btnScan.Margin = new Padding(6, 7, 6, 7);
             btnScan.Name = "btnScan";
             btnScan.Size = new Size(227, 57);
@@ -224,11 +227,44 @@ namespace CodeToTxt
             checkBox2.UseVisualStyleBackColor = true;
             checkBox2.CheckedChanged += checkBox2_CheckedChanged;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.Location = new Point(161, 388);
+            label7.Name = "label7";
+            label7.Size = new Size(143, 32);
+            label7.TabIndex = 19;
+            label7.Text = "Ignore File:";
+            // 
+            // txtIgnoreFilePath
+            // 
+            txtIgnoreFilePath.Location = new Point(314, 383);
+            txtIgnoreFilePath.Margin = new Padding(6, 7, 6, 7);
+            txtIgnoreFilePath.Name = "txtIgnoreFilePath";
+            txtIgnoreFilePath.ReadOnly = true;
+            txtIgnoreFilePath.Size = new Size(645, 39);
+            txtIgnoreFilePath.TabIndex = 18;
+            // 
+            // btnBrowseIgnore
+            // 
+            btnBrowseIgnore.Location = new Point(971, 374);
+            btnBrowseIgnore.Margin = new Padding(6, 7, 6, 7);
+            btnBrowseIgnore.Name = "btnBrowseIgnore";
+            btnBrowseIgnore.Size = new Size(162, 57);
+            btnBrowseIgnore.TabIndex = 17;
+            btnBrowseIgnore.Text = "Browse";
+            btnBrowseIgnore.UseVisualStyleBackColor = true;
+            btnBrowseIgnore.Click += btnBrowseIgnore_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1180, 525);
+            ClientSize = new Size(1180, 587);
+            Controls.Add(label7);
+            Controls.Add(txtIgnoreFilePath);
+            Controls.Add(btnBrowseIgnore);
             Controls.Add(checkBox2);
             Controls.Add(checkBox1);
             Controls.Add(label6);
@@ -276,5 +312,8 @@ namespace CodeToTxt
         private Label label6;
         private CheckBox checkBox1;
         private CheckBox checkBox2;
+        private Label label7;
+        private TextBox txtIgnoreFilePath;
+        private Button btnBrowseIgnore;
     }
 }

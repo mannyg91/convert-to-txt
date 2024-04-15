@@ -48,11 +48,13 @@ namespace CodeToTxt
             bool scanCs = checkBox1.Checked;
             bool scanPy = checkBox2.Checked;
 
+            string ignoreFilePath = txtIgnoreFilePath.Text;
+
             if (!string.IsNullOrEmpty(folderPath) && !string.IsNullOrEmpty(outputFolderPath))
             {
                 if (Directory.Exists(outputFolderPath))
                 {
-                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy);
+                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy, ignoreFilePath);
                     MessageBox.Show("Scanning completed successfully!");
                 }
                 else
@@ -79,6 +81,18 @@ namespace CodeToTxt
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnBrowseIgnore_Click(object sender, EventArgs e)
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    txtIgnoreFilePath.Text = openFileDialog.FileName;
+                }
+            }
         }
     }
 }
