@@ -130,7 +130,6 @@ namespace CodeToTxt
             label1.Size = new Size(201, 32);
             label1.TabIndex = 8;
             label1.Text = "Max Words/File:";
-            label1.Click += label1_Click;
             // 
             // btnScan
             // 
@@ -174,7 +173,6 @@ namespace CodeToTxt
             label4.Size = new Size(825, 96);
             label4.TabIndex = 12;
             label4.Text = "Scans project files and combines code onto one or more .txt files split up by the desired amount of characters. Useful for code analysis when using LLM models.";
-            label4.Click += label4_Click;
             // 
             // label5
             // 
@@ -235,140 +233,9 @@ namespace CodeToTxt
         private Label label1;
         private Button btnScan;
 
-        private void btnBrowseFolder_Click(object sender, EventArgs e)
-        {
-            using (var folderBrowserDialog = new FolderBrowserDialog())
-            {
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    txtFolderPath.Text = folderBrowserDialog.SelectedPath;
-                }
-            }
-        }
+        
 
-        private void btnBrowseOutput_Click(object sender, EventArgs e)
-        {
-            using (var folderBrowserDialog = new FolderBrowserDialog())
-            {
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    txtOutputPath.Text = folderBrowserDialog.SelectedPath;
-                }
-            }
-        }
-
-        private void btnScan_Click(object sender, EventArgs e)
-        {
-            string folderPath = txtFolderPath.Text;
-            string outputFolderPath = txtOutputPath.Text;
-            int maxWords = (int)nudMaxWords.Value;
-
-            bool scanHtml = chkHtml.Checked;
-            bool scanCss = chkCss.Checked;
-            bool scanJs = chkJs.Checked;
-
-            if (!string.IsNullOrEmpty(folderPath) && !string.IsNullOrEmpty(outputFolderPath))
-            {
-                if (Directory.Exists(outputFolderPath))
-                {
-                    ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs);
-                    MessageBox.Show("Scanning completed successfully!");
-                }
-                else
-                {
-                    MessageBox.Show("Please select a valid output folder.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select a folder and output folder.");
-            }
-        }
-
-        private void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs)
-        {
-            var fileContents = new Dictionary<string, string>();
-            var fileNames = new List<string>();
-
-            foreach (string file in Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories))
-            {
-                string extension = Path.GetExtension(file).ToLower();
-                if ((scanHtml && extension == ".html") ||
-                    (scanCss && extension == ".css") ||
-                    (scanJs && extension == ".js"))
-                {
-                    string content = File.ReadAllText(file);
-                    fileContents.Add(file, content);
-                    fileNames.Add(Path.GetFileName(file));
-                }
-            }
-
-            var textFiles = new Dictionary<string, StringBuilder>();
-            var currentFile = new StringBuilder();
-            var currentFileNames = new List<string>();
-            int wordCount = 0;
-            int fileCount = 1;
-
-            foreach (var file in fileContents)
-            {
-                string[] lines = file.Value.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-
-                currentFile.AppendLine($"***{Path.GetFileName(file.Key)}***");
-
-                foreach (string line in lines)
-                {
-                    string[] words = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    wordCount += words.Length;
-
-                    currentFile.AppendLine(line);
-
-                    if (wordCount >= maxWords)
-                    {
-                        string textFileName = string.Join("_", currentFileNames.Select(GetSafeFileName));
-                        string uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
-                        while (textFiles.ContainsKey(uniqueFileName))
-                        {
-                            fileCount++;
-                            uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
-                        }
-                        textFiles.Add(uniqueFileName, currentFile);
-
-                        currentFile = new StringBuilder();
-                        currentFileNames = new List<string>();
-                        wordCount = 0;
-                        fileCount++;
-                    }
-                }
-
-                currentFile.AppendLine();
-                currentFileNames.Add(Path.GetFileName(file.Key));
-            }
-
-            if (currentFile.Length > 0)
-            {
-                string textFileName = string.Join("_", currentFileNames.Select(GetSafeFileName));
-                string uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
-                while (textFiles.ContainsKey(uniqueFileName))
-                {
-                    fileCount++;
-                    uniqueFileName = $"{GetSafeFileName(textFileName)}_{fileCount}.txt";
-                }
-                textFiles.Add(uniqueFileName, currentFile);
-            }
-
-            foreach (var textFile in textFiles)
-            {
-                string outputPath = Path.Combine(outputFolderPath, textFile.Key);
-                File.WriteAllText(outputPath, textFile.Value.ToString());
-            }
-        }
-
-        private string GetSafeFileName(string fileName)
-        {
-            string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-            string safeFileName = new string(fileName.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray());
-            return safeFileName.Substring(0, Math.Min(safeFileName.Length, 50));
-        }
+        
         private Label label2;
         private Label label3;
         private Label label4;
