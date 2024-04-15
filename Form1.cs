@@ -45,12 +45,14 @@ namespace CodeToTxt
             bool scanHtml = chkHtml.Checked;
             bool scanCss = chkCss.Checked;
             bool scanJs = chkJs.Checked;
+            bool scanCs = checkBox1.Checked;
+            bool scanPy = checkBox2.Checked;
 
             if (!string.IsNullOrEmpty(folderPath) && !string.IsNullOrEmpty(outputFolderPath))
             {
                 if (Directory.Exists(outputFolderPath))
                 {
-                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs);
+                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy);
                     MessageBox.Show("Scanning completed successfully!");
                 }
                 else
@@ -62,6 +64,21 @@ namespace CodeToTxt
             {
                 MessageBox.Show("Please select a folder and output folder.");
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkHtml_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

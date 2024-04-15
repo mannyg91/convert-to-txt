@@ -8,7 +8,7 @@ namespace CodeToTxt
 {
     public class CodeScanner
     {
-        public void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs)
+        public void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs, bool scanCs, bool scanPy)
         {
             var fileContents = new Dictionary<string, string>();
             var fileNames = new List<string>();
@@ -18,7 +18,9 @@ namespace CodeToTxt
                 string extension = Path.GetExtension(file).ToLower();
                 if ((scanHtml && extension == ".html") ||
                     (scanCss && extension == ".css") ||
-                    (scanJs && extension == ".js"))
+                    (scanJs && extension == ".js") ||
+                    (scanCs && extension == ".cs") ||
+                    (scanPy && extension == ".py")) 
                 {
                     string content = File.ReadAllText(file);
                     fileContents.Add(file, content);

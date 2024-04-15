@@ -27,6 +27,8 @@ namespace CodeToTxt
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
+            checkBox1 = new CheckBox();
+            checkBox2 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)nudMaxWords).BeginInit();
             SuspendLayout();
             // 
@@ -38,22 +40,23 @@ namespace CodeToTxt
             chkHtml.Location = new Point(316, 156);
             chkHtml.Margin = new Padding(6, 7, 6, 7);
             chkHtml.Name = "chkHtml";
-            chkHtml.Size = new Size(109, 36);
+            chkHtml.Size = new Size(100, 36);
             chkHtml.TabIndex = 0;
-            chkHtml.Text = "HTML";
+            chkHtml.Text = ".html";
             chkHtml.UseVisualStyleBackColor = true;
+            chkHtml.CheckedChanged += chkHtml_CheckedChanged;
             // 
             // chkCss
             // 
             chkCss.AutoSize = true;
             chkCss.Checked = true;
             chkCss.CheckState = CheckState.Checked;
-            chkCss.Location = new Point(448, 156);
+            chkCss.Location = new Point(417, 156);
             chkCss.Margin = new Padding(6, 7, 6, 7);
             chkCss.Name = "chkCss";
-            chkCss.Size = new Size(87, 36);
+            chkCss.Size = new Size(82, 36);
             chkCss.TabIndex = 1;
-            chkCss.Text = "CSS";
+            chkCss.Text = ".css";
             chkCss.UseVisualStyleBackColor = true;
             // 
             // chkJs
@@ -61,12 +64,12 @@ namespace CodeToTxt
             chkJs.AutoSize = true;
             chkJs.Checked = true;
             chkJs.CheckState = CheckState.Checked;
-            chkJs.Location = new Point(563, 156);
+            chkJs.Location = new Point(507, 156);
             chkJs.Margin = new Padding(6, 7, 6, 7);
             chkJs.Name = "chkJs";
-            chkJs.Size = new Size(68, 36);
+            chkJs.Size = new Size(67, 36);
             chkJs.TabIndex = 2;
-            chkJs.Text = "JS";
+            chkJs.Text = ".js";
             chkJs.UseVisualStyleBackColor = true;
             // 
             // btnBrowseFolder
@@ -194,11 +197,40 @@ namespace CodeToTxt
             label6.TabIndex = 14;
             label6.Text = "Destination Folder:";
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = CheckState.Checked;
+            checkBox1.Location = new Point(594, 156);
+            checkBox1.Margin = new Padding(6, 7, 6, 7);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(72, 36);
+            checkBox1.TabIndex = 15;
+            checkBox1.Text = ".cs";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Checked = true;
+            checkBox2.CheckState = CheckState.Checked;
+            checkBox2.Location = new Point(685, 156);
+            checkBox2.Margin = new Padding(6, 7, 6, 7);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(77, 36);
+            checkBox2.TabIndex = 16;
+            checkBox2.Text = ".py";
+            checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1180, 525);
+            Controls.Add(checkBox2);
+            Controls.Add(checkBox1);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -217,6 +249,7 @@ namespace CodeToTxt
             Margin = new Padding(6, 7, 6, 7);
             Name = "Form1";
             Text = "Code to Text";
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)nudMaxWords).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -233,13 +266,15 @@ namespace CodeToTxt
         private Label label1;
         private Button btnScan;
 
-        
 
-        
+
+
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
         private Label label6;
+        private CheckBox checkBox1;
+        private CheckBox checkBox2;
     }
 }
