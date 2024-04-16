@@ -8,11 +8,15 @@ namespace CodeToTxt
     public partial class Form1 : Form
     {
         private CodeScanner codeScanner;
+        private const string FolderPathKey = "FolderPath";
+        private const string OutputPathKey = "OutputPath";
+        private const string IgnoreFilePathKey = "IgnoreFilePath";
 
         public Form1()
         {
             InitializeComponent();
             codeScanner = new CodeScanner();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
         }
 
         private void btnBrowseFolder_Click(object sender, EventArgs e)
@@ -75,7 +79,10 @@ namespace CodeToTxt
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            // Load saved paths
+            txtFolderPath.Text = Properties.Settings.Default[FolderPathKey] as string;
+            txtOutputPath.Text = Properties.Settings.Default[OutputPathKey] as string;
+            txtIgnoreFilePath.Text = Properties.Settings.Default[IgnoreFilePathKey] as string;
         }
 
         private void chkHtml_CheckedChanged(object sender, EventArgs e)
@@ -108,6 +115,15 @@ namespace CodeToTxt
         private void label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Save paths
+            Properties.Settings.Default[FolderPathKey] = txtFolderPath.Text;
+            Properties.Settings.Default[OutputPathKey] = txtOutputPath.Text;
+            Properties.Settings.Default[IgnoreFilePathKey] = txtIgnoreFilePath.Text;
+            Properties.Settings.Default.Save();
         }
     }
 }
