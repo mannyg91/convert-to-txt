@@ -1,6 +1,7 @@
 using CodeToTxt;
 using System;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace CodeToTxt
 {
@@ -56,6 +57,10 @@ namespace CodeToTxt
                 {
                     codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy, ignoreFilePath);
                     MessageBox.Show("Scanning completed successfully!");
+                    if (Directory.Exists(outputFolderPath))
+                    {
+                        Process.Start("explorer.exe", outputFolderPath);
+                    }
                 }
                 else
                 {
