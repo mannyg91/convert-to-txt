@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Crawls a user-specified folder, scanning targeted file types and combines text content onto one or more .txt files split up by the desired number of characters. Convenient for text input when analyzing code with LLM models. Optionally, include a txt file similar to a .gitignore to avoid scanning specific directories, file types, or file names.</value>
+  </data>
 </root>
