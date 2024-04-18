@@ -1,0 +1,75 @@
+# Ignore Node.js modules
+node_modules/
+
+# Ignore package manager files
+package-lock.json
+yarn.lock
+
+# Ignore compiled files and build artifacts
+bin/
+obj/
+dist/
+build/
+out/
+target/
+
+# Ignore IDE and editor specific files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore log files
+logs/
+*.log
+
+# Ignore temporary files
+temp/
+tmp/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore specific library files and directories
+jquery*.js
+kendo*.js
+semantic*.css
+semantic*.js
+lib/
+assets/
+
+# Ignore configuration files
+.env
+*.config
+web.config
+app.config
+
+# Ignore test and documentation files
+tests/
+docs/
+*.md
+
+# User Specified Ignores:
+App_Code/
+App_Start/
+Kendo/
+Semantic/
+Extensions/
+Filters/
+Fonts/
+Images/
+Properties/
+Scripts/
+Service References/
+spec/
+Templates/
+
+.asax
+
+# Ignore files containing
+*modernizr*
+*gulp*
+*kendo*
