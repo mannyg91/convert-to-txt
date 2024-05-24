@@ -46,6 +46,17 @@ assets/
 *.config
 web.config
 app.config
+appsettings.json
+secrets.json
+
+# Ignore other sensitive files
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+aws-credentials
+PublishProfiles/
 
 # Ignore test and documentation files
 tests/
@@ -66,10 +77,11 @@ Scripts/
 Service References/
 spec/
 Templates/
-
 .asax
 
 # Ignore files containing
 *modernizr*
 *gulp*
 *kendo*
+
+
