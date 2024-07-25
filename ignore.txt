@@ -43,11 +43,16 @@ assets/
 
 # Ignore configuration files
 .env
+.env.local
+.env.*
 *.config
 web.config
 app.config
 appsettings.json
 secrets.json
+*.properties
+*.yml
+*.yaml
 
 # Ignore other sensitive files
 *.pem
@@ -55,8 +60,32 @@ secrets.json
 *.crt
 *.pfx
 *.p12
+*.jks
 aws-credentials
+credentials.json
 PublishProfiles/
+*.pubxml
+
+# Ignore Ninject specific files
+App_Start/Ninject.Web.Common.cs
+App_Start/NinjectDependencyScope.cs
+App_Start/NinjectWebCommon.cs
+
+# Ignore global application file
+Global.asax.cs
+
+# Ignore database and backup files
+*.sqlite
+*.db
+*.bak
+*.bak*
+
+# Ignore files containing "config"
+*config*
+
+# Ignore sensitive directories
+config/
+secrets/
 
 # Ignore test and documentation files
 tests/
@@ -84,4 +113,7 @@ Templates/
 *gulp*
 *kendo*
 
-
+# Miscellaneous sensitive files
+*.swp
+*.swo
+*.pid
