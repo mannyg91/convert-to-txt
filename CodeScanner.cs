@@ -9,7 +9,7 @@ namespace CodeToTxt
 {
     public class CodeScanner
     {
-        public void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs, bool scanCs, bool scanPy, string ignoreFilePath)
+        public void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs, bool scanCs, bool scanPy, bool scanCshtml, string ignoreFilePath)
         {
             var fileContents = new Dictionary<string, string>();
             var fileNames = new List<string>();
@@ -33,7 +33,8 @@ namespace CodeToTxt
                     (scanCss && extension == ".css") ||
                     (scanJs && extension == ".js") ||
                     (scanCs && extension == ".cs") ||
-                    (scanPy && extension == ".py"))
+                    (scanPy && extension == ".py") ||
+                    (scanCshtml && extension == ".cshtml"))
                 {
                     string content = File.ReadAllText(file);
                     fileContents.Add(file, content);

@@ -16,6 +16,7 @@ namespace CodeToTxt
             chkHtml = new CheckBox();
             chkCss = new CheckBox();
             chkJs = new CheckBox();
+            chkCshtml = new CheckBox();
             btnBrowseFolder = new Button();
             txtFolderPath = new TextBox();
             btnBrowseOutput = new Button();
@@ -75,6 +76,19 @@ namespace CodeToTxt
             chkJs.TabIndex = 2;
             chkJs.Text = ".js";
             chkJs.UseVisualStyleBackColor = true;
+            //
+            // cshtml
+            //
+            chkCshtml.AutoSize = true;
+            chkCshtml.Checked = true;
+            chkCshtml.CheckState = CheckState.Checked;
+            chkCshtml.Location = new Point(785, 199);
+            chkCshtml.Margin = new Padding(6, 7, 6, 7);
+            chkCshtml.Name = "chkCshtml";
+            chkCshtml.Size = new Size(120, 36);
+            chkCshtml.TabIndex = 20;
+            chkCshtml.Text = ".cshtml";
+            chkCshtml.UseVisualStyleBackColor = true;
             // 
             // btnBrowseFolder
             // 
@@ -285,6 +299,7 @@ namespace CodeToTxt
             Controls.Add(chkJs);
             Controls.Add(chkCss);
             Controls.Add(chkHtml);
+            Controls.Add(chkCshtml);
             Margin = new Padding(6, 7, 6, 7);
             Name = "Form1";
             Text = "Code to Text";
@@ -297,6 +312,7 @@ namespace CodeToTxt
         private CheckBox chkHtml;
         private CheckBox chkCss;
         private CheckBox chkJs;
+        private CheckBox chkCshtml;
         private Button btnBrowseFolder;
         private TextBox txtFolderPath;
         private Button btnBrowseOutput;

@@ -52,6 +52,7 @@ namespace CodeToTxt
             bool scanJs = chkJs.Checked;
             bool scanCs = checkBox1.Checked;
             bool scanPy = checkBox2.Checked;
+            bool scanCshtml = chkCshtml.Checked;
 
             string ignoreFilePath = txtIgnoreFilePath.Text;
 
@@ -59,7 +60,7 @@ namespace CodeToTxt
             {
                 if (Directory.Exists(outputFolderPath))
                 {
-                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy, ignoreFilePath);
+                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy, scanCshtml, ignoreFilePath);
                     MessageBox.Show("Scanning completed successfully!");
                     if (Directory.Exists(outputFolderPath))
                     {
