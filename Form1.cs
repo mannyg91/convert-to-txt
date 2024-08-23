@@ -1,5 +1,7 @@
-using CodeToTxt;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 
@@ -11,12 +13,73 @@ namespace CodeToTxt
         private const string FolderPathKey = "FolderPath";
         private const string OutputPathKey = "OutputPath";
         private const string IgnoreFilePathKey = "IgnoreFilePath";
+        private List<string> selectedFiles = new List<string>();
+        private CheckedListBox fileListBox;
 
         public Form1()
         {
             InitializeComponent();
+            InitializeFileListBox();
             codeScanner = new CodeScanner();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+        }
+        private void InitializeFileListBox()
+        {
+            fileListBox = new CheckedListBox
+            {
+                Location = new Point(320, 450),
+                Size = new Size(645, 200),
+                CheckOnClick = true
+            };
+            this.Controls.Add(fileListBox);
+
+            // Adjust the form size to accommodate the new control
+            this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + 220);
+
+            // Move the Scan button and Max Words controls
+            btnScan.Location = new Point(btnScan.Location.X, btnScan.Location.Y + 220);
+            label1.Location = new Point(label1.Location.X, label1.Location.Y + 220);
+            nudMaxWords.Location = new Point(nudMaxWords.Location.X, nudMaxWords.Location.Y + 220);
+        }
+
+        private void FileListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            string filePath = fileListBox.Items[e.Index].ToString();
+            if (e.NewValue == CheckState.Checked)
+            {
+                if (!selectedFiles.Contains(filePath))
+                    selectedFiles.Add(filePath);
+            }
+            else
+            {
+                selectedFiles.Remove(filePath);
+            }
+        }
+
+        private void PopulateFileList()
+        {
+            fileListBox.Items.Clear();
+
+            string folderPath = txtFolderPath.Text;
+            if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
+                return;
+
+            var allowedExtensions = new List<string>();
+            if (chkHtml.Checked) allowedExtensions.Add(".html");
+            if (chkCss.Checked) allowedExtensions.Add(".css");
+            if (chkJs.Checked) allowedExtensions.Add(".js");
+            if (checkBox1.Checked) allowedExtensions.Add(".cs");
+            if (checkBox2.Checked) allowedExtensions.Add(".py");
+            if (chkCshtml.Checked) allowedExtensions.Add(".cshtml");
+
+            var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
+                .Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower()))
+                .ToList();
+
+            foreach (var file in files)
+            {
+                fileListBox.Items.Add(file, true);
+            }
         }
 
         private void btnBrowseFolder_Click(object sender, EventArgs e)
@@ -26,6 +89,7 @@ namespace CodeToTxt
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
                     txtFolderPath.Text = folderBrowserDialog.SelectedPath;
+                    PopulateFileList();
                 }
             }
         }
@@ -43,38 +107,27 @@ namespace CodeToTxt
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            string folderPath = txtFolderPath.Text;
             string outputFolderPath = txtOutputPath.Text;
             int maxWords = (int)nudMaxWords.Value;
-
-            bool scanHtml = chkHtml.Checked;
-            bool scanCss = chkCss.Checked;
-            bool scanJs = chkJs.Checked;
-            bool scanCs = checkBox1.Checked;
-            bool scanPy = checkBox2.Checked;
-            bool scanCshtml = chkCshtml.Checked;
-
             string ignoreFilePath = txtIgnoreFilePath.Text;
 
-            if (!string.IsNullOrEmpty(folderPath) && !string.IsNullOrEmpty(outputFolderPath))
+            var selectedFiles = fileListBox.CheckedItems.Cast<string>().ToList();
+
+            if (selectedFiles.Count == 0)
             {
-                if (Directory.Exists(outputFolderPath))
-                {
-                    codeScanner.ScanFolder(folderPath, outputFolderPath, maxWords, scanHtml, scanCss, scanJs, scanCs, scanPy, scanCshtml, ignoreFilePath);
-                    MessageBox.Show("Scanning completed successfully!");
-                    if (Directory.Exists(outputFolderPath))
-                    {
-                        Process.Start("explorer.exe", outputFolderPath);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Please select a valid output folder.");
-                }
+                MessageBox.Show("Please select at least one file to process.");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(outputFolderPath) && Directory.Exists(outputFolderPath))
+            {
+                codeScanner.ScanSelectedFiles(selectedFiles, outputFolderPath, maxWords, ignoreFilePath);
+                MessageBox.Show("Scanning completed successfully!");
+                Process.Start("explorer.exe", outputFolderPath);
             }
             else
             {
-                MessageBox.Show("Please select a folder and output folder.");
+                MessageBox.Show("Please select a valid output folder.");
             }
         }
 

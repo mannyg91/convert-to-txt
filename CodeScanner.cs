@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace CodeToTxt
 {
     public class CodeScanner
     {
-        public void ScanFolder(string folderPath, string outputFolderPath, int maxWords, bool scanHtml, bool scanCss, bool scanJs, bool scanCs, bool scanPy, bool scanCshtml, string ignoreFilePath)
+        public void ScanSelectedFiles(List<string> selectedFiles, string outputFolderPath, int maxWords, string ignoreFilePath)
         {
             var fileContents = new Dictionary<string, string>();
             var fileNames = new List<string>();
@@ -19,22 +18,13 @@ namespace CodeToTxt
             {
                 ignorePatterns = File.ReadAllLines(ignoreFilePath)
                     .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
-                    .Select(line => Path.Combine(folderPath, line.Trim().Replace('/', Path.DirectorySeparatorChar)))
+                    .Select(line => Path.GetFullPath(line.Trim().Replace('/', Path.DirectorySeparatorChar)))
                     .ToList();
             }
 
-            var files = Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories)
-                .Where(file => !ignorePatterns.Any(pattern => file.StartsWith(pattern, StringComparison.OrdinalIgnoreCase)));
-
-            foreach (string file in files)
+            foreach (string file in selectedFiles)
             {
-                string extension = Path.GetExtension(file).ToLower();
-                if ((scanHtml && extension == ".html") ||
-                    (scanCss && extension == ".css") ||
-                    (scanJs && extension == ".js") ||
-                    (scanCs && extension == ".cs") ||
-                    (scanPy && extension == ".py") ||
-                    (scanCshtml && extension == ".cshtml"))
+                if (File.Exists(file) && !ignorePatterns.Any(pattern => file.StartsWith(pattern, StringComparison.OrdinalIgnoreCase)))
                 {
                     string content = File.ReadAllText(file);
                     fileContents.Add(file, content);
@@ -108,21 +98,5 @@ namespace CodeToTxt
             string safeFileName = new string(fileName.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray());
             return safeFileName.Substring(0, Math.Min(safeFileName.Length, 50));
         }
-
-        //private bool IsFileIgnored(string filePath, List<string> ignorePatterns)
-        //{
-        //    foreach (string pattern in ignorePatterns)
-        //    {
-        //        if (Regex.IsMatch(filePath, WildcardToRegex(pattern), RegexOptions.IgnoreCase))
-        //            return true;
-        //    }
-        //    return false;
-        //}
-
-        //private string WildcardToRegex(string pattern)
-        //{
-        //    string escapedPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".") + "($|/)";
-        //    return escapedPattern;
-        //}
     }
 }
