@@ -27,8 +27,8 @@ namespace CodeToTxt
         {
             fileListBox = new CheckedListBox
             {
-                Location = new Point(320, 450),
-                Size = new Size(645, 200),
+                Location = new Point(10, 240),
+                Size = new Size(685, 210),
                 CheckOnClick = true
             };
             this.Controls.Add(fileListBox);
