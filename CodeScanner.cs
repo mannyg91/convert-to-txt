@@ -11,26 +11,20 @@ namespace CodeToTxt
     {
         public List<string> FilterFromIgnoreList(List<string> files, string ignoreFilePath, string basePath)
         {
-            Debug.WriteLine("Running filter from ignore list.");
-            Debug.WriteLine($"Base path: {basePath}");
-            Debug.WriteLine($"Files: {string.Join(", ", files)}");
 
             var ignorePatterns = new List<string>();
             if (!string.IsNullOrEmpty(ignoreFilePath) && File.Exists(ignoreFilePath))
             {
-                Debug.WriteLine("Ignore file exists.");
                 ignorePatterns = File.ReadAllLines(ignoreFilePath)
                     .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
                     .Select(line => line.Trim().Replace('/', Path.DirectorySeparatorChar))
                     .ToList();
-                Debug.WriteLine($"Ignore patterns: {string.Join(", ", ignorePatterns)}");
             }
 
             var filteredFiles = files.Where(file =>
             {
                 if (!File.Exists(file))
                 {
-                    Debug.WriteLine($"File does not exist: {file}");
                     return false;
                 }
 
@@ -39,23 +33,13 @@ namespace CodeToTxt
                 {
                     bool match = relativePath.StartsWith(pattern, StringComparison.OrdinalIgnoreCase) ||
                                  Path.GetFileName(relativePath).Equals(pattern, StringComparison.OrdinalIgnoreCase);
-                    if (match)
-                    {
-                        Debug.WriteLine($"File {file} matched ignore pattern {pattern}");
-                    }
+                   
                     return match;
                 });
-
-                if (!shouldInclude)
-                {
-                    Debug.WriteLine($"Excluding file: {file}");
-                }
 
                 return shouldInclude;
             }).ToList();
 
-            Debug.WriteLine($"Total files: {files.Count}");
-            Debug.WriteLine($"Filtered files: {filteredFiles.Count}");
             return filteredFiles;
         }
 

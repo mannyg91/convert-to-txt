@@ -72,11 +72,17 @@ namespace CodeToTxt
             if (checkBox2.Checked) allowedExtensions.Add(".py");
             if (chkCshtml.Checked) allowedExtensions.Add(".cshtml");
 
+            
+
             var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
                 .Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower()))
                 .ToList();
 
-            foreach (var file in files)
+            string ignoreFilePath = txtIgnoreFilePath.Text;
+            string basePath = txtFolderPath.Text;
+            var filteredFiles = codeScanner.FilterFromIgnoreList(files, ignoreFilePath, basePath);
+
+            foreach (var file in filteredFiles)
             {
                 fileListBox.Items.Add(file, true);
             }
