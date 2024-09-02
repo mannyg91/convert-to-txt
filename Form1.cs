@@ -121,7 +121,8 @@ namespace CodeToTxt
 
             if (!string.IsNullOrEmpty(outputFolderPath) && Directory.Exists(outputFolderPath))
             {
-                codeScanner.ScanSelectedFiles(selectedFiles, outputFolderPath, maxWords, ignoreFilePath);
+                var basePath = txtFolderPath.Text;
+                codeScanner.ScanSelectedFiles(selectedFiles, outputFolderPath, maxWords, ignoreFilePath, basePath);
                 MessageBox.Show("Scanning completed successfully!");
                 Process.Start("explorer.exe", outputFolderPath);
             }

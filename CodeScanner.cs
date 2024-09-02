@@ -3,33 +3,74 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace CodeToTxt
 {
     public class CodeScanner
     {
-        public void ScanSelectedFiles(List<string> selectedFiles, string outputFolderPath, int maxWords, string ignoreFilePath)
+        public List<string> FilterFromIgnoreList(List<string> files, string ignoreFilePath, string basePath)
         {
-            var fileContents = new Dictionary<string, string>();
-            var fileNames = new List<string>();
+            Debug.WriteLine("Running filter from ignore list.");
+            Debug.WriteLine($"Base path: {basePath}");
+            Debug.WriteLine($"Files: {string.Join(", ", files)}");
 
             var ignorePatterns = new List<string>();
             if (!string.IsNullOrEmpty(ignoreFilePath) && File.Exists(ignoreFilePath))
             {
+                Debug.WriteLine("Ignore file exists.");
                 ignorePatterns = File.ReadAllLines(ignoreFilePath)
                     .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
-                    .Select(line => Path.GetFullPath(line.Trim().Replace('/', Path.DirectorySeparatorChar)))
+                    .Select(line => line.Trim().Replace('/', Path.DirectorySeparatorChar))
                     .ToList();
+                Debug.WriteLine($"Ignore patterns: {string.Join(", ", ignorePatterns)}");
             }
 
-            foreach (string file in selectedFiles)
+            var filteredFiles = files.Where(file =>
             {
-                if (File.Exists(file) && !ignorePatterns.Any(pattern => file.StartsWith(pattern, StringComparison.OrdinalIgnoreCase)))
+                if (!File.Exists(file))
                 {
-                    string content = File.ReadAllText(file);
-                    fileContents.Add(file, content);
-                    fileNames.Add(Path.GetFileName(file));
+                    Debug.WriteLine($"File does not exist: {file}");
+                    return false;
                 }
+
+                string relativePath = Path.GetRelativePath(basePath, file);
+                bool shouldInclude = !ignorePatterns.Any(pattern =>
+                {
+                    bool match = relativePath.StartsWith(pattern, StringComparison.OrdinalIgnoreCase) ||
+                                 Path.GetFileName(relativePath).Equals(pattern, StringComparison.OrdinalIgnoreCase);
+                    if (match)
+                    {
+                        Debug.WriteLine($"File {file} matched ignore pattern {pattern}");
+                    }
+                    return match;
+                });
+
+                if (!shouldInclude)
+                {
+                    Debug.WriteLine($"Excluding file: {file}");
+                }
+
+                return shouldInclude;
+            }).ToList();
+
+            Debug.WriteLine($"Total files: {files.Count}");
+            Debug.WriteLine($"Filtered files: {filteredFiles.Count}");
+            return filteredFiles;
+        }
+
+        public void ScanSelectedFiles(List<string> selectedFiles, string outputFolderPath, int maxWords, string ignoreFilePath, string basePath)
+        {
+            Debug.WriteLine("scanSelectedFiles ran");
+            var filteredFiles = FilterFromIgnoreList(selectedFiles, ignoreFilePath, basePath);
+            var fileContents = new Dictionary<string, string>();
+            var fileNames = new List<string>();
+
+            foreach (string file in filteredFiles)
+            {
+                string content = File.ReadAllText(file);
+                fileContents.Add(file, content);
+                fileNames.Add(Path.GetFileName(file));
             }
 
             var textFiles = new Dictionary<string, StringBuilder>();
