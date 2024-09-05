@@ -76,16 +76,16 @@ namespace CodeToTxt
             chkJs.TabIndex = 2;
             chkJs.Text = ".js";
             chkJs.UseVisualStyleBackColor = true;
-            //
-            // cshtml
-            //
+            // 
+            // chkCshtml
+            // 
             chkCshtml.AutoSize = true;
             chkCshtml.Checked = true;
             chkCshtml.CheckState = CheckState.Checked;
             chkCshtml.Location = new Point(785, 199);
             chkCshtml.Margin = new Padding(6, 7, 6, 7);
             chkCshtml.Name = "chkCshtml";
-            chkCshtml.Size = new Size(120, 36);
+            chkCshtml.Size = new Size(121, 36);
             chkCshtml.TabIndex = 20;
             chkCshtml.Text = ".cshtml";
             chkCshtml.UseVisualStyleBackColor = true;
@@ -132,7 +132,7 @@ namespace CodeToTxt
             // 
             // nudMaxWords
             // 
-            nudMaxWords.Location = new Point(590, 545);
+            nudMaxWords.Location = new Point(577, 813);
             nudMaxWords.Margin = new Padding(6, 7, 6, 7);
             nudMaxWords.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudMaxWords.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -145,7 +145,7 @@ namespace CodeToTxt
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(380, 545);
+            label1.Location = new Point(367, 813);
             label1.Margin = new Padding(6, 0, 6, 0);
             label1.Name = "label1";
             label1.Size = new Size(201, 32);
@@ -156,7 +156,7 @@ namespace CodeToTxt
             // 
             btnScan.BackColor = SystemColors.Highlight;
             btnScan.ForeColor = SystemColors.ButtonHighlight;
-            btnScan.Location = new Point(838, 533);
+            btnScan.Location = new Point(825, 801);
             btnScan.Margin = new Padding(6, 7, 6, 7);
             btnScan.Name = "btnScan";
             btnScan.Size = new Size(227, 57);
@@ -278,7 +278,7 @@ namespace CodeToTxt
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1306, 642);
+            ClientSize = new Size(1292, 932);
             Controls.Add(label7);
             Controls.Add(txtIgnoreFilePath);
             Controls.Add(btnBrowseIgnore);

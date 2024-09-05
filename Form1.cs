@@ -19,27 +19,51 @@ namespace CodeToTxt
         public Form1()
         {
             InitializeComponent();
+            this.AutoScaleMode = AutoScaleMode.Dpi;
             InitializeFileListBox();
             codeScanner = new CodeScanner();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Resize += new EventHandler(Form1_Resize);
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            InitializeFileListBox();
         }
         private void InitializeFileListBox()
         {
             fileListBox = new CheckedListBox
             {
-                Location = new Point(10, 240),
-                Size = new Size(685, 210),
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
                 CheckOnClick = true
             };
             this.Controls.Add(fileListBox);
 
-            // Adjust the form size to accommodate the new control
-            this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + 220);
+            // Set the fileListBox position and size relative to the form
+            const float listBoxTopMargin = 0.55f; // 40% from the top of the form
+            const float listBoxBottomMargin = 0.1f; // 10% from the bottom of the form
+            const float listBoxSideMargin = 0.02f; // 2% from each side
 
-            // Move the Scan button and Max Words controls
-            btnScan.Location = new Point(btnScan.Location.X, btnScan.Location.Y + 220);
-            label1.Location = new Point(label1.Location.X, label1.Location.Y + 220);
-            nudMaxWords.Location = new Point(nudMaxWords.Location.X, nudMaxWords.Location.Y + 220);
+            int listBoxTop = (int)(this.ClientSize.Height * listBoxTopMargin);
+            int listBoxBottom = (int)(this.ClientSize.Height * (1 - listBoxBottomMargin));
+            int listBoxLeft = (int)(this.ClientSize.Width * listBoxSideMargin);
+            int listBoxRight = (int)(this.ClientSize.Width * (1 - listBoxSideMargin));
+
+            fileListBox.Location = new Point(listBoxLeft, listBoxTop);
+            fileListBox.Size = new Size(listBoxRight - listBoxLeft, listBoxBottom - listBoxTop);
+
+            // Adjust other controls
+            btnScan.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            nudMaxWords.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+
+            // Set positions relative to the bottom of the form
+            const float bottomControlMargin = 0.05f; // 5% from the bottom
+            int bottomControlY = (int)(this.ClientSize.Height * (1 - bottomControlMargin));
+
+            btnScan.Location = new Point(listBoxRight - btnScan.Width, bottomControlY - btnScan.Height);
+            label1.Location = new Point(listBoxLeft, bottomControlY - label1.Height);
+            nudMaxWords.Location = new Point(label1.Right + 5, bottomControlY - nudMaxWords.Height);
         }
 
         private void FileListBox_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -72,7 +96,7 @@ namespace CodeToTxt
             if (checkBox2.Checked) allowedExtensions.Add(".py");
             if (chkCshtml.Checked) allowedExtensions.Add(".cshtml");
 
-            
+
 
             var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
                 .Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower()))
