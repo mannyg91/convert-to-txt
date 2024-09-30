@@ -13,34 +13,26 @@ namespace CodeToTxt
         private const string FolderPathKey = "FolderPath";
         private const string OutputPathKey = "OutputPath";
         private const string IgnoreFilePathKey = "IgnoreFilePath";
-        private List<string> selectedFiles = new List<string>();
-        private CheckedListBox fileListBox;
 
         public Form1()
         {
             InitializeComponent();
             this.AutoScaleMode = AutoScaleMode.Dpi;
-            InitializeFileListBox();
             codeScanner = new CodeScanner();
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new FormClosingEventHandler(this.Form1_FormClosing);
             this.Resize += new EventHandler(Form1_Resize);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            InitializeFileListBox();
+            // Adjust the size and position of existing controls here
+            AdjustControlSizes();
         }
-        private void InitializeFileListBox()
-        {
-            fileListBox = new CheckedListBox
-            {
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
-                CheckOnClick = true
-            };
-            this.Controls.Add(fileListBox);
 
-            // Set the fileListBox position and size relative to the form
-            const float listBoxTopMargin = 0.55f; // 40% from the top of the form
+        private void AdjustControlSizes()
+        {
+            // Adjust the fileListBox position and size relative to the form
+            const float listBoxTopMargin = 0.55f; // 55% from the top of the form
             const float listBoxBottomMargin = 0.1f; // 10% from the bottom of the form
             const float listBoxSideMargin = 0.02f; // 2% from each side
 
@@ -49,8 +41,8 @@ namespace CodeToTxt
             int listBoxLeft = (int)(this.ClientSize.Width * listBoxSideMargin);
             int listBoxRight = (int)(this.ClientSize.Width * (1 - listBoxSideMargin));
 
-            fileListBox.Location = new Point(listBoxLeft, listBoxTop);
-            fileListBox.Size = new Size(listBoxRight - listBoxLeft, listBoxBottom - listBoxTop);
+            fileListBox.Location = new System.Drawing.Point(listBoxLeft, listBoxTop);
+            fileListBox.Size = new System.Drawing.Size(listBoxRight - listBoxLeft, listBoxBottom - listBoxTop);
 
             // Adjust other controls
             btnScan.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -61,23 +53,9 @@ namespace CodeToTxt
             const float bottomControlMargin = 0.05f; // 5% from the bottom
             int bottomControlY = (int)(this.ClientSize.Height * (1 - bottomControlMargin));
 
-            btnScan.Location = new Point(listBoxRight - btnScan.Width, bottomControlY - btnScan.Height);
-            label1.Location = new Point(listBoxLeft, bottomControlY - label1.Height);
-            nudMaxWords.Location = new Point(label1.Right + 5, bottomControlY - nudMaxWords.Height);
-        }
-
-        private void FileListBox_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            string filePath = fileListBox.Items[e.Index].ToString();
-            if (e.NewValue == CheckState.Checked)
-            {
-                if (!selectedFiles.Contains(filePath))
-                    selectedFiles.Add(filePath);
-            }
-            else
-            {
-                selectedFiles.Remove(filePath);
-            }
+            btnScan.Location = new System.Drawing.Point(listBoxRight - btnScan.Width, bottomControlY - btnScan.Height);
+            label1.Location = new System.Drawing.Point(listBoxLeft, bottomControlY - label1.Height);
+            nudMaxWords.Location = new System.Drawing.Point(label1.Right + 5, bottomControlY - nudMaxWords.Height);
         }
 
         private void PopulateFileList()
@@ -95,8 +73,6 @@ namespace CodeToTxt
             if (checkBox1.Checked) allowedExtensions.Add(".cs");
             if (checkBox2.Checked) allowedExtensions.Add(".py");
             if (chkCshtml.Checked) allowedExtensions.Add(".cshtml");
-
-
 
             var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
                 .Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower()))
@@ -168,16 +144,19 @@ namespace CodeToTxt
             txtFolderPath.Text = Properties.Settings.Default[FolderPathKey] as string;
             txtOutputPath.Text = Properties.Settings.Default[OutputPathKey] as string;
             txtIgnoreFilePath.Text = Properties.Settings.Default[IgnoreFilePathKey] as string;
+
+            // Adjust controls initially
+            AdjustControlSizes();
         }
 
         private void chkHtml_CheckedChanged(object sender, EventArgs e)
         {
-
+            PopulateFileList();
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-
+            PopulateFileList();
         }
 
         private void btnBrowseIgnore_Click(object sender, EventArgs e)
@@ -194,12 +173,12 @@ namespace CodeToTxt
 
         private void label4_Click(object sender, EventArgs e)
         {
-
+            // Optional: Add any action if needed
         }
 
         private void label7_Click(object sender, EventArgs e)
         {
-
+            // Optional: Add any action if needed
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -209,6 +188,13 @@ namespace CodeToTxt
             Properties.Settings.Default[OutputPathKey] = txtOutputPath.Text;
             Properties.Settings.Default[IgnoreFilePathKey] = txtIgnoreFilePath.Text;
             Properties.Settings.Default.Save();
+        }
+
+        // Add this method to handle the ItemCheck event
+        private void FileListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // If you need to handle item check events, add your code here
+            // For example, you can refresh the selected files list or perform validation
         }
     }
 }

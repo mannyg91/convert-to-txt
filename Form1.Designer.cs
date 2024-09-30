@@ -3,336 +3,369 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace CodeToTxt
 {
-    public partial class Form1 : Form
+    partial class Form1
     {
+        // Required designer variable.
+        private System.ComponentModel.IContainer components = null;
 
+        // Declare all controls
+        private System.Windows.Forms.CheckBox chkHtml;
+        private System.Windows.Forms.CheckBox chkCss;
+        private System.Windows.Forms.CheckBox chkJs;
+        private System.Windows.Forms.CheckBox chkCshtml;
+        private System.Windows.Forms.Button btnBrowseFolder;
+        private System.Windows.Forms.TextBox txtFolderPath;
+        private System.Windows.Forms.Button btnBrowseOutput;
+        private System.Windows.Forms.TextBox txtOutputPath;
+        private System.Windows.Forms.NumericUpDown nudMaxWords;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnScan;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtIgnoreFilePath;
+        private System.Windows.Forms.Button btnBrowseIgnore;
+        private System.Windows.Forms.CheckedListBox fileListBox;
+
+        /// <summary>
+        ///  Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+                fileListBox.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            chkHtml = new CheckBox();
-            chkCss = new CheckBox();
-            chkJs = new CheckBox();
-            chkCshtml = new CheckBox();
-            btnBrowseFolder = new Button();
-            txtFolderPath = new TextBox();
-            btnBrowseOutput = new Button();
-            txtOutputPath = new TextBox();
-            nudMaxWords = new NumericUpDown();
-            label1 = new Label();
-            btnScan = new Button();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
-            checkBox1 = new CheckBox();
-            checkBox2 = new CheckBox();
-            label7 = new Label();
-            txtIgnoreFilePath = new TextBox();
-            btnBrowseIgnore = new Button();
-            ((System.ComponentModel.ISupportInitialize)nudMaxWords).BeginInit();
-            SuspendLayout();
+            this.chkHtml = new System.Windows.Forms.CheckBox();
+            this.chkCss = new System.Windows.Forms.CheckBox();
+            this.chkJs = new System.Windows.Forms.CheckBox();
+            this.chkCshtml = new System.Windows.Forms.CheckBox();
+            this.btnBrowseFolder = new System.Windows.Forms.Button();
+            this.txtFolderPath = new System.Windows.Forms.TextBox();
+            this.btnBrowseOutput = new System.Windows.Forms.Button();
+            this.txtOutputPath = new System.Windows.Forms.TextBox();
+            this.nudMaxWords = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnScan = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtIgnoreFilePath = new System.Windows.Forms.TextBox();
+            this.btnBrowseIgnore = new System.Windows.Forms.Button();
+            this.fileListBox = new System.Windows.Forms.CheckedListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxWords)).BeginInit();
+            this.SuspendLayout();
             // 
             // chkHtml
             // 
-            chkHtml.AutoSize = true;
-            chkHtml.Checked = true;
-            chkHtml.CheckState = CheckState.Checked;
-            chkHtml.Location = new Point(323, 199);
-            chkHtml.Margin = new Padding(6, 7, 6, 7);
-            chkHtml.Name = "chkHtml";
-            chkHtml.Size = new Size(100, 36);
-            chkHtml.TabIndex = 0;
-            chkHtml.Text = ".html";
-            chkHtml.UseVisualStyleBackColor = true;
-            chkHtml.CheckedChanged += chkHtml_CheckedChanged;
+            this.chkHtml.AutoSize = true;
+            this.chkHtml.Checked = true;
+            this.chkHtml.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkHtml.Location = new System.Drawing.Point(323, 199);
+            this.chkHtml.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.chkHtml.Name = "chkHtml";
+            this.chkHtml.Size = new System.Drawing.Size(100, 36);
+            this.chkHtml.TabIndex = 0;
+            this.chkHtml.Text = ".html";
+            this.chkHtml.UseVisualStyleBackColor = true;
+            this.chkHtml.CheckedChanged += new System.EventHandler(this.chkHtml_CheckedChanged);
             // 
             // chkCss
             // 
-            chkCss.AutoSize = true;
-            chkCss.Checked = true;
-            chkCss.CheckState = CheckState.Checked;
-            chkCss.Location = new Point(424, 199);
-            chkCss.Margin = new Padding(6, 7, 6, 7);
-            chkCss.Name = "chkCss";
-            chkCss.Size = new Size(82, 36);
-            chkCss.TabIndex = 1;
-            chkCss.Text = ".css";
-            chkCss.UseVisualStyleBackColor = true;
+            this.chkCss.AutoSize = true;
+            this.chkCss.Checked = true;
+            this.chkCss.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCss.Location = new System.Drawing.Point(424, 199);
+            this.chkCss.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.chkCss.Name = "chkCss";
+            this.chkCss.Size = new System.Drawing.Size(82, 36);
+            this.chkCss.TabIndex = 1;
+            this.chkCss.Text = ".css";
+            this.chkCss.UseVisualStyleBackColor = true;
+            this.chkCss.CheckedChanged += new System.EventHandler(this.chkHtml_CheckedChanged);
             // 
             // chkJs
             // 
-            chkJs.AutoSize = true;
-            chkJs.Checked = true;
-            chkJs.CheckState = CheckState.Checked;
-            chkJs.Location = new Point(514, 199);
-            chkJs.Margin = new Padding(6, 7, 6, 7);
-            chkJs.Name = "chkJs";
-            chkJs.Size = new Size(67, 36);
-            chkJs.TabIndex = 2;
-            chkJs.Text = ".js";
-            chkJs.UseVisualStyleBackColor = true;
+            this.chkJs.AutoSize = true;
+            this.chkJs.Checked = true;
+            this.chkJs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkJs.Location = new System.Drawing.Point(514, 199);
+            this.chkJs.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.chkJs.Name = "chkJs";
+            this.chkJs.Size = new System.Drawing.Size(67, 36);
+            this.chkJs.TabIndex = 2;
+            this.chkJs.Text = ".js";
+            this.chkJs.UseVisualStyleBackColor = true;
+            this.chkJs.CheckedChanged += new System.EventHandler(this.chkHtml_CheckedChanged);
             // 
             // chkCshtml
             // 
-            chkCshtml.AutoSize = true;
-            chkCshtml.Checked = true;
-            chkCshtml.CheckState = CheckState.Checked;
-            chkCshtml.Location = new Point(785, 199);
-            chkCshtml.Margin = new Padding(6, 7, 6, 7);
-            chkCshtml.Name = "chkCshtml";
-            chkCshtml.Size = new Size(121, 36);
-            chkCshtml.TabIndex = 20;
-            chkCshtml.Text = ".cshtml";
-            chkCshtml.UseVisualStyleBackColor = true;
+            this.chkCshtml.AutoSize = true;
+            this.chkCshtml.Checked = true;
+            this.chkCshtml.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCshtml.Location = new System.Drawing.Point(785, 199);
+            this.chkCshtml.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.chkCshtml.Name = "chkCshtml";
+            this.chkCshtml.Size = new System.Drawing.Size(121, 36);
+            this.chkCshtml.TabIndex = 20;
+            this.chkCshtml.Text = ".cshtml";
+            this.chkCshtml.UseVisualStyleBackColor = true;
+            this.chkCshtml.CheckedChanged += new System.EventHandler(this.chkHtml_CheckedChanged);
             // 
             // btnBrowseFolder
             // 
-            btnBrowseFolder.Location = new Point(977, 275);
-            btnBrowseFolder.Margin = new Padding(6, 7, 6, 7);
-            btnBrowseFolder.Name = "btnBrowseFolder";
-            btnBrowseFolder.Size = new Size(162, 57);
-            btnBrowseFolder.TabIndex = 3;
-            btnBrowseFolder.Text = "Browse";
-            btnBrowseFolder.UseVisualStyleBackColor = true;
-            btnBrowseFolder.Click += btnBrowseFolder_Click;
+            this.btnBrowseFolder.Location = new System.Drawing.Point(977, 275);
+            this.btnBrowseFolder.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.btnBrowseFolder.Name = "btnBrowseFolder";
+            this.btnBrowseFolder.Size = new System.Drawing.Size(162, 57);
+            this.btnBrowseFolder.TabIndex = 3;
+            this.btnBrowseFolder.Text = "Browse";
+            this.btnBrowseFolder.UseVisualStyleBackColor = true;
+            this.btnBrowseFolder.Click += new System.EventHandler(this.btnBrowseFolder_Click);
             // 
             // txtFolderPath
             // 
-            txtFolderPath.Location = new Point(320, 284);
-            txtFolderPath.Margin = new Padding(6, 7, 6, 7);
-            txtFolderPath.Name = "txtFolderPath";
-            txtFolderPath.ReadOnly = true;
-            txtFolderPath.Size = new Size(645, 39);
-            txtFolderPath.TabIndex = 4;
+            this.txtFolderPath.Location = new System.Drawing.Point(320, 284);
+            this.txtFolderPath.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.txtFolderPath.Name = "txtFolderPath";
+            this.txtFolderPath.ReadOnly = true;
+            this.txtFolderPath.Size = new System.Drawing.Size(645, 39);
+            this.txtFolderPath.TabIndex = 4;
             // 
             // btnBrowseOutput
             // 
-            btnBrowseOutput.Location = new Point(977, 346);
-            btnBrowseOutput.Margin = new Padding(6, 7, 6, 7);
-            btnBrowseOutput.Name = "btnBrowseOutput";
-            btnBrowseOutput.Size = new Size(162, 57);
-            btnBrowseOutput.TabIndex = 5;
-            btnBrowseOutput.Text = "Browse";
-            btnBrowseOutput.UseVisualStyleBackColor = true;
-            btnBrowseOutput.Click += btnBrowseOutput_Click;
+            this.btnBrowseOutput.Location = new System.Drawing.Point(977, 346);
+            this.btnBrowseOutput.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.btnBrowseOutput.Name = "btnBrowseOutput";
+            this.btnBrowseOutput.Size = new System.Drawing.Size(162, 57);
+            this.btnBrowseOutput.TabIndex = 5;
+            this.btnBrowseOutput.Text = "Browse";
+            this.btnBrowseOutput.UseVisualStyleBackColor = true;
+            this.btnBrowseOutput.Click += new System.EventHandler(this.btnBrowseOutput_Click);
             // 
             // txtOutputPath
             // 
-            txtOutputPath.Location = new Point(320, 355);
-            txtOutputPath.Margin = new Padding(6, 7, 6, 7);
-            txtOutputPath.Name = "txtOutputPath";
-            txtOutputPath.ReadOnly = true;
-            txtOutputPath.Size = new Size(645, 39);
-            txtOutputPath.TabIndex = 6;
+            this.txtOutputPath.Location = new System.Drawing.Point(320, 355);
+            this.txtOutputPath.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.txtOutputPath.Name = "txtOutputPath";
+            this.txtOutputPath.ReadOnly = true;
+            this.txtOutputPath.Size = new System.Drawing.Size(645, 39);
+            this.txtOutputPath.TabIndex = 6;
             // 
             // nudMaxWords
             // 
-            nudMaxWords.Location = new Point(577, 813);
-            nudMaxWords.Margin = new Padding(6, 7, 6, 7);
-            nudMaxWords.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            nudMaxWords.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            nudMaxWords.Name = "nudMaxWords";
-            nudMaxWords.Size = new Size(181, 39);
-            nudMaxWords.TabIndex = 7;
-            nudMaxWords.Value = new decimal(new int[] { 50000, 0, 0, 0 });
+            this.nudMaxWords.Location = new System.Drawing.Point(577, 813);
+            this.nudMaxWords.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.nudMaxWords.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            this.nudMaxWords.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudMaxWords.Name = "nudMaxWords";
+            this.nudMaxWords.Size = new System.Drawing.Size(181, 39);
+            this.nudMaxWords.TabIndex = 7;
+            this.nudMaxWords.Value = new decimal(new int[] { 50000, 0, 0, 0 });
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(367, 813);
-            label1.Margin = new Padding(6, 0, 6, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(201, 32);
-            label1.TabIndex = 8;
-            label1.Text = "Max Words/File:";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(367, 813);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(201, 32);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Max Words/File:";
             // 
             // btnScan
             // 
-            btnScan.BackColor = SystemColors.Highlight;
-            btnScan.ForeColor = SystemColors.ButtonHighlight;
-            btnScan.Location = new Point(825, 801);
-            btnScan.Margin = new Padding(6, 7, 6, 7);
-            btnScan.Name = "btnScan";
-            btnScan.Size = new Size(227, 57);
-            btnScan.TabIndex = 9;
-            btnScan.Text = "Scan / Generate";
-            btnScan.UseVisualStyleBackColor = false;
-            btnScan.Click += btnScan_Click;
+            this.btnScan.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnScan.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnScan.Location = new System.Drawing.Point(825, 801);
+            this.btnScan.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.btnScan.Name = "btnScan";
+            this.btnScan.Size = new System.Drawing.Size(227, 57);
+            this.btnScan.TabIndex = 9;
+            this.btnScan.Text = "Scan / Generate";
+            this.btnScan.UseVisualStyleBackColor = false;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.FlatStyle = FlatStyle.System;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(99, 199);
-            label2.Name = "label2";
-            label2.Size = new Size(211, 32);
-            label2.TabIndex = 10;
-            label2.Text = "Target File Types:";
+            this.label2.AutoSize = true;
+            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(99, 199);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(211, 32);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Target File Types:";
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            label3.Location = new Point(36, 34);
-            label3.Name = "label3";
-            label3.Size = new Size(266, 51);
-            label3.TabIndex = 11;
-            label3.Text = "Code-to-TXTs";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 14F, (System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline), System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(36, 34);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(266, 51);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Code-to-TXTs";
             // 
             // label4
             // 
-            label4.Font = new Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(320, 34);
-            label4.Name = "label4";
-            label4.Size = new Size(891, 155);
-            label4.TabIndex = 12;
-            label4.Text = resources.GetString("label4.Text");
-            label4.Click += label4_Click;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(320, 34);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(891, 155);
+            this.label4.TabIndex = 12;
+            this.label4.Text = resources.GetString("label4.Text");
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label5
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label5.Location = new Point(135, 287);
-            label5.Name = "label5";
-            label5.Size = new Size(179, 32);
-            label5.TabIndex = 13;
-            label5.Text = "Source Folder:";
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(135, 287);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(179, 32);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Source Folder:";
             // 
             // label6
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label6.Location = new Point(78, 362);
-            label6.Name = "label6";
-            label6.Size = new Size(233, 32);
-            label6.TabIndex = 14;
-            label6.Text = "Destination Folder:";
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(78, 362);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(233, 32);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Destination Folder:";
             // 
             // checkBox1
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Checked = true;
-            checkBox1.CheckState = CheckState.Checked;
-            checkBox1.Location = new Point(601, 199);
-            checkBox1.Margin = new Padding(6, 7, 6, 7);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(72, 36);
-            checkBox1.TabIndex = 15;
-            checkBox1.Text = ".cs";
-            checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(601, 199);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(72, 36);
+            this.checkBox1.TabIndex = 15;
+            this.checkBox1.Text = ".cs";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.chkHtml_CheckedChanged);
             // 
             // checkBox2
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Checked = true;
-            checkBox2.CheckState = CheckState.Checked;
-            checkBox2.Location = new Point(692, 199);
-            checkBox2.Margin = new Padding(6, 7, 6, 7);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(77, 36);
-            checkBox2.TabIndex = 16;
-            checkBox2.Text = ".py";
-            checkBox2.UseVisualStyleBackColor = true;
-            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.Location = new System.Drawing.Point(692, 199);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(77, 36);
+            this.checkBox2.TabIndex = 16;
+            this.checkBox2.Text = ".py";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // label7
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label7.Location = new Point(168, 431);
-            label7.Name = "label7";
-            label7.Size = new Size(142, 32);
-            label7.TabIndex = 19;
-            label7.Text = "Ignore .txt:";
-            label7.Click += label7_Click;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label7.Location = new System.Drawing.Point(168, 431);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(142, 32);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Ignore .txt:";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // txtIgnoreFilePath
             // 
-            txtIgnoreFilePath.Location = new Point(321, 426);
-            txtIgnoreFilePath.Margin = new Padding(6, 7, 6, 7);
-            txtIgnoreFilePath.Name = "txtIgnoreFilePath";
-            txtIgnoreFilePath.ReadOnly = true;
-            txtIgnoreFilePath.Size = new Size(645, 39);
-            txtIgnoreFilePath.TabIndex = 18;
+            this.txtIgnoreFilePath.Location = new System.Drawing.Point(321, 426);
+            this.txtIgnoreFilePath.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.txtIgnoreFilePath.Name = "txtIgnoreFilePath";
+            this.txtIgnoreFilePath.ReadOnly = true;
+            this.txtIgnoreFilePath.Size = new System.Drawing.Size(645, 39);
+            this.txtIgnoreFilePath.TabIndex = 18;
             // 
             // btnBrowseIgnore
             // 
-            btnBrowseIgnore.Location = new Point(978, 417);
-            btnBrowseIgnore.Margin = new Padding(6, 7, 6, 7);
-            btnBrowseIgnore.Name = "btnBrowseIgnore";
-            btnBrowseIgnore.Size = new Size(162, 57);
-            btnBrowseIgnore.TabIndex = 17;
-            btnBrowseIgnore.Text = "Browse";
-            btnBrowseIgnore.UseVisualStyleBackColor = true;
-            btnBrowseIgnore.Click += btnBrowseIgnore_Click;
+            this.btnBrowseIgnore.Location = new System.Drawing.Point(978, 417);
+            this.btnBrowseIgnore.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.btnBrowseIgnore.Name = "btnBrowseIgnore";
+            this.btnBrowseIgnore.Size = new System.Drawing.Size(162, 57);
+            this.btnBrowseIgnore.TabIndex = 17;
+            this.btnBrowseIgnore.Text = "Browse";
+            this.btnBrowseIgnore.UseVisualStyleBackColor = true;
+            this.btnBrowseIgnore.Click += new System.EventHandler(this.btnBrowseIgnore_Click);
+            // 
+            // fileListBox
+            // 
+            this.fileListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileListBox.CheckOnClick = true;
+            this.fileListBox.FormattingEnabled = true;
+            this.fileListBox.Location = new System.Drawing.Point(50, 500);
+            this.fileListBox.Name = "fileListBox";
+            this.fileListBox.Size = new System.Drawing.Size(1200, 200);
+            this.fileListBox.TabIndex = 21;
+            this.fileListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.FileListBox_ItemCheck);
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1292, 932);
-            Controls.Add(label7);
-            Controls.Add(txtIgnoreFilePath);
-            Controls.Add(btnBrowseIgnore);
-            Controls.Add(checkBox2);
-            Controls.Add(checkBox1);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(btnScan);
-            Controls.Add(label1);
-            Controls.Add(nudMaxWords);
-            Controls.Add(txtOutputPath);
-            Controls.Add(btnBrowseOutput);
-            Controls.Add(txtFolderPath);
-            Controls.Add(btnBrowseFolder);
-            Controls.Add(chkJs);
-            Controls.Add(chkCss);
-            Controls.Add(chkHtml);
-            Controls.Add(chkCshtml);
-            Margin = new Padding(6, 7, 6, 7);
-            Name = "Form1";
-            Text = "Code to Text";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)nudMaxWords).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1292, 932);
+            this.Controls.Add(this.fileListBox);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtIgnoreFilePath);
+            this.Controls.Add(this.btnBrowseIgnore);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnScan);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.nudMaxWords);
+            this.Controls.Add(this.txtOutputPath);
+            this.Controls.Add(this.btnBrowseOutput);
+            this.Controls.Add(this.txtFolderPath);
+            this.Controls.Add(this.btnBrowseFolder);
+            this.Controls.Add(this.chkJs);
+            this.Controls.Add(this.chkCss);
+            this.Controls.Add(this.chkHtml);
+            this.Controls.Add(this.chkCshtml);
+            this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.Name = "Form1";
+            this.Text = "Code to Text";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxWords)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
-
-        private CheckBox chkHtml;
-        private CheckBox chkCss;
-        private CheckBox chkJs;
-        private CheckBox chkCshtml;
-        private Button btnBrowseFolder;
-        private TextBox txtFolderPath;
-        private Button btnBrowseOutput;
-        private TextBox txtOutputPath;
-        private NumericUpDown nudMaxWords;
-        private Label label1;
-        private Button btnScan;
-
-
-
-
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
-        private Label label6;
-        private CheckBox checkBox1;
-        private CheckBox checkBox2;
-        private Label label7;
-        private TextBox txtIgnoreFilePath;
-        private Button btnBrowseIgnore;
     }
 }
