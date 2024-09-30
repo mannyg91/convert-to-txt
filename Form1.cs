@@ -146,6 +146,12 @@ namespace CodeToTxt
 
             // Adjust controls initially
             AdjustControlSizes();
+
+            // Clear selection if no items are in the file list
+            if (fileListBox.Items.Count == 0)
+            {
+                this.ActiveControl = btnScan;
+            }
         }
 
         private void chkHtml_CheckedChanged(object sender, EventArgs e)
