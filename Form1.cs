@@ -20,7 +20,6 @@ namespace CodeToTxt
             this.AutoScaleMode = AutoScaleMode.Dpi;
             codeScanner = new CodeScanner();
             this.FormClosing += new FormClosingEventHandler(this.Form1_FormClosing);
-            this.Resize += new EventHandler(Form1_Resize);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
