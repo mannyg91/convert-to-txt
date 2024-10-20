@@ -22,41 +22,6 @@ namespace CodeToTxt
             this.FormClosing += new FormClosingEventHandler(this.Form1_FormClosing);
         }
 
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            // Adjust the size and position of existing controls here
-            AdjustControlSizes();
-        }
-
-        private void AdjustControlSizes()
-        {
-            // Adjust the fileListBox position and size relative to the form
-            const float listBoxTopMargin = 0.55f; // 55% from the top of the form
-            const float listBoxBottomMargin = 0.1f; // 10% from the bottom of the form
-            const float listBoxSideMargin = 0.02f; // 2% from each side
-
-            int listBoxTop = (int)(this.ClientSize.Height * listBoxTopMargin);
-            int listBoxBottom = (int)(this.ClientSize.Height * (1 - listBoxBottomMargin));
-            int listBoxLeft = (int)(this.ClientSize.Width * listBoxSideMargin);
-            int listBoxRight = (int)(this.ClientSize.Width * (1 - listBoxSideMargin));
-
-            fileListBox.Location = new System.Drawing.Point(listBoxLeft, listBoxTop);
-            fileListBox.Size = new System.Drawing.Size(listBoxRight - listBoxLeft, listBoxBottom - listBoxTop);
-
-            // Adjust other controls
-            btnScan.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            nudMaxWords.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-
-            // Set positions relative to the bottom of the form
-            const float bottomControlMargin = 0.05f; // 5% from the bottom
-            int bottomControlY = (int)(this.ClientSize.Height * (1 - bottomControlMargin));
-
-            btnScan.Location = new System.Drawing.Point(listBoxRight - btnScan.Width, bottomControlY - btnScan.Height);
-            label1.Location = new System.Drawing.Point(listBoxLeft, bottomControlY - label1.Height);
-            nudMaxWords.Location = new System.Drawing.Point(label1.Right + 5, bottomControlY - nudMaxWords.Height);
-        }
-
         private void PopulateFileList()
         {
             fileListBox.Items.Clear();
@@ -143,15 +108,6 @@ namespace CodeToTxt
             txtFolderPath.Text = Properties.Settings.Default[FolderPathKey] as string;
             txtOutputPath.Text = Properties.Settings.Default[OutputPathKey] as string;
             txtIgnoreFilePath.Text = Properties.Settings.Default[IgnoreFilePathKey] as string;
-
-            // Adjust controls initially
-            AdjustControlSizes();
-
-            // Clear selection if no items are in the file list
-            if (fileListBox.Items.Count == 0)
-            {
-                this.ActiveControl = btnScan;
-            }
         }
 
         private void chkHtml_CheckedChanged(object sender, EventArgs e)
@@ -195,11 +151,28 @@ namespace CodeToTxt
             Properties.Settings.Default.Save();
         }
 
-        // Add this method to handle the ItemCheck event
+        // Event handler for ItemCheck event of fileListBox
         private void FileListBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            // If you need to handle item check events, add your code here
-            // For example, you can refresh the selected files list or perform validation
+            // Optional: Handle item check events if needed
+        }
+
+        // Event handler for Select All button
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < fileListBox.Items.Count; i++)
+            {
+                fileListBox.SetItemChecked(i, true);
+            }
+        }
+
+        // Event handler for Deselect All button
+        private void btnDeselectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < fileListBox.Items.Count; i++)
+            {
+                fileListBox.SetItemChecked(i, false);
+            }
         }
     }
 }
