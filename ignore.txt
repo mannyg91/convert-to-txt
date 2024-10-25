@@ -8,7 +8,6 @@ yarn.lock
 # Ignore compiled files and build artifacts
 bin/
 obj/
-dist/
 build/
 out/
 target/

@@ -26,16 +26,18 @@ namespace CodeToTxt
         private Label label4;
         private Label label5;
         private Label label6;
-        private CheckBox checkBox1;
-        private CheckBox checkBox2;
+        private CheckBox chkCs;
+        private CheckBox chkPy;
         private Label label7;
         private TextBox txtIgnoreFilePath;
         private Button btnBrowseIgnore;
-        private CheckedListBox fileListBox;
+        private CustomCheckedListBox fileListBox; // Use the custom control
         private Panel topPanel;
         private Panel bottomPanel;
         private Button btnSelectAll;
         private Button btnDeselectAll;
+        private CheckBox chkIncludeFileStructure;
+        private CheckBox chkIncludeAllFiles;
 
         /// <summary>
         ///  Clean up any resources being used.
@@ -53,7 +55,6 @@ namespace CodeToTxt
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 
             // Initialize panels
             this.topPanel = new Panel();
@@ -64,8 +65,8 @@ namespace CodeToTxt
             this.chkCss = new CheckBox();
             this.chkJs = new CheckBox();
             this.chkCshtml = new CheckBox();
-            this.checkBox1 = new CheckBox();
-            this.checkBox2 = new CheckBox();
+            this.chkCs = new CheckBox();
+            this.chkPy = new CheckBox();
             this.btnBrowseFolder = new Button();
             this.txtFolderPath = new TextBox();
             this.btnBrowseOutput = new Button();
@@ -81,9 +82,11 @@ namespace CodeToTxt
             this.label5 = new Label();
             this.label6 = new Label();
             this.label7 = new Label();
-            this.fileListBox = new CheckedListBox();
+            this.fileListBox = new CustomCheckedListBox(); // Use the custom control
             this.btnSelectAll = new Button();
             this.btnDeselectAll = new Button();
+            this.chkIncludeFileStructure = new CheckBox();
+            this.chkIncludeAllFiles = new CheckBox();
 
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxWords)).BeginInit();
             this.SuspendLayout();
@@ -99,8 +102,8 @@ namespace CodeToTxt
             this.topPanel.Controls.Add(this.chkHtml);
             this.topPanel.Controls.Add(this.chkCss);
             this.topPanel.Controls.Add(this.chkJs);
-            this.topPanel.Controls.Add(this.checkBox1);
-            this.topPanel.Controls.Add(this.checkBox2);
+            this.topPanel.Controls.Add(this.chkCs);
+            this.topPanel.Controls.Add(this.chkPy);
             this.topPanel.Controls.Add(this.chkCshtml);
             this.topPanel.Controls.Add(this.label5);
             this.topPanel.Controls.Add(this.txtFolderPath);
@@ -113,6 +116,8 @@ namespace CodeToTxt
             this.topPanel.Controls.Add(this.btnBrowseIgnore);
             this.topPanel.Controls.Add(this.btnSelectAll);
             this.topPanel.Controls.Add(this.btnDeselectAll);
+            this.topPanel.Controls.Add(this.chkIncludeFileStructure);
+            this.topPanel.Controls.Add(this.chkIncludeAllFiles);
 
             // 
             // bottomPanel
@@ -130,18 +135,15 @@ namespace CodeToTxt
             this.fileListBox.Dock = DockStyle.Fill;
             this.fileListBox.FormattingEnabled = true;
             this.fileListBox.ItemHeight = 32;
-            this.fileListBox.Location = new Point(0, 0);
+            this.fileListBox.Location = new Point(0, this.topPanel.Height);
             this.fileListBox.Margin = new Padding(6, 7, 6, 7);
             this.fileListBox.Name = "fileListBox";
-            this.fileListBox.Size = new Size(1292, 932);
+            this.fileListBox.Size = new Size(1000, this.ClientSize.Height - this.topPanel.Height - this.bottomPanel.Height);
             this.fileListBox.TabIndex = 21;
-            this.fileListBox.ItemCheck += new ItemCheckEventHandler(this.FileListBox_ItemCheck);
 
             // 
-            // Initialize other controls
-            // 
-
             // label3 (Title)
+            // 
             this.label3.AutoSize = true;
             this.label3.Font = new Font("Segoe UI", 14F, (FontStyle.Bold | FontStyle.Underline), GraphicsUnit.Point);
             this.label3.Location = new Point(20, 20);
@@ -150,16 +152,20 @@ namespace CodeToTxt
             this.label3.TabIndex = 11;
             this.label3.Text = "Code-to-TXTs";
 
+            // 
             // label4 (Description)
+            // 
             this.label4.Font = new Font("Segoe UI", 8.5F, FontStyle.Regular, GraphicsUnit.Point);
             this.label4.Location = new Point(300, 20);
             this.label4.Name = "label4";
-            this.label4.Size = new Size(891, 155);
+            this.label4.Size = new Size(650, 150);
             this.label4.TabIndex = 12;
-            this.label4.Text = resources.GetString("label4.Text");
+            this.label4.Text = "This application allows you to scan code files and generate text files with the content. You can select specific file types, include the folder hierarchy, and choose to include all files or only selected ones.";
             this.label4.Click += new EventHandler(this.label4_Click);
 
+            // 
             // label2 (Target File Types)
+            // 
             this.label2.AutoSize = true;
             this.label2.FlatStyle = FlatStyle.System;
             this.label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
@@ -169,7 +175,9 @@ namespace CodeToTxt
             this.label2.TabIndex = 10;
             this.label2.Text = "Target File Types:";
 
+            // 
             // chkHtml
+            // 
             this.chkHtml.AutoSize = true;
             this.chkHtml.Checked = true;
             this.chkHtml.CheckState = CheckState.Checked;
@@ -182,7 +190,9 @@ namespace CodeToTxt
             this.chkHtml.UseVisualStyleBackColor = true;
             this.chkHtml.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
+            // 
             // chkCss
+            // 
             this.chkCss.AutoSize = true;
             this.chkCss.Checked = true;
             this.chkCss.CheckState = CheckState.Checked;
@@ -195,7 +205,9 @@ namespace CodeToTxt
             this.chkCss.UseVisualStyleBackColor = true;
             this.chkCss.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
+            // 
             // chkJs
+            // 
             this.chkJs.AutoSize = true;
             this.chkJs.Checked = true;
             this.chkJs.CheckState = CheckState.Checked;
@@ -208,33 +220,39 @@ namespace CodeToTxt
             this.chkJs.UseVisualStyleBackColor = true;
             this.chkJs.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
-            // checkBox1 (.cs)
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = CheckState.Checked;
-            this.checkBox1.Location = new Point(520, 190);
-            this.checkBox1.Margin = new Padding(6, 7, 6, 7);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new Size(72, 36);
-            this.checkBox1.TabIndex = 15;
-            this.checkBox1.Text = ".cs";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
+            // 
+            // chkCs (.cs)
+            // 
+            this.chkCs.AutoSize = true;
+            this.chkCs.Checked = true;
+            this.chkCs.CheckState = CheckState.Checked;
+            this.chkCs.Location = new Point(520, 190);
+            this.chkCs.Margin = new Padding(6, 7, 6, 7);
+            this.chkCs.Name = "chkCs";
+            this.chkCs.Size = new Size(72, 36);
+            this.chkCs.TabIndex = 15;
+            this.chkCs.Text = ".cs";
+            this.chkCs.UseVisualStyleBackColor = true;
+            this.chkCs.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
-            // checkBox2 (.py)
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = CheckState.Checked;
-            this.checkBox2.Location = new Point(600, 190);
-            this.checkBox2.Margin = new Padding(6, 7, 6, 7);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new Size(77, 36);
-            this.checkBox2.TabIndex = 16;
-            this.checkBox2.Text = ".py";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // chkPy (.py)
+            // 
+            this.chkPy.AutoSize = true;
+            this.chkPy.Checked = true;
+            this.chkPy.CheckState = CheckState.Checked;
+            this.chkPy.Location = new Point(600, 190);
+            this.chkPy.Margin = new Padding(6, 7, 6, 7);
+            this.chkPy.Name = "chkPy";
+            this.chkPy.Size = new Size(77, 36);
+            this.chkPy.TabIndex = 16;
+            this.chkPy.Text = ".py";
+            this.chkPy.UseVisualStyleBackColor = true;
+            this.chkPy.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
+            // 
             // chkCshtml
+            // 
             this.chkCshtml.AutoSize = true;
             this.chkCshtml.Checked = true;
             this.chkCshtml.CheckState = CheckState.Checked;
@@ -247,7 +265,9 @@ namespace CodeToTxt
             this.chkCshtml.UseVisualStyleBackColor = true;
             this.chkCshtml.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
+            // 
             // label5 (Source Folder)
+            // 
             this.label5.AutoSize = true;
             this.label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             this.label5.Location = new Point(20, 240);
@@ -256,7 +276,9 @@ namespace CodeToTxt
             this.label5.TabIndex = 13;
             this.label5.Text = "Source Folder:";
 
+            // 
             // txtFolderPath
+            // 
             this.txtFolderPath.Location = new Point(210, 240);
             this.txtFolderPath.Margin = new Padding(6, 7, 6, 7);
             this.txtFolderPath.Name = "txtFolderPath";
@@ -264,7 +286,9 @@ namespace CodeToTxt
             this.txtFolderPath.Size = new Size(645, 39);
             this.txtFolderPath.TabIndex = 4;
 
+            // 
             // btnBrowseFolder
+            // 
             this.btnBrowseFolder.Location = new Point(870, 230);
             this.btnBrowseFolder.Margin = new Padding(6, 7, 6, 7);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
@@ -274,7 +298,9 @@ namespace CodeToTxt
             this.btnBrowseFolder.UseVisualStyleBackColor = true;
             this.btnBrowseFolder.Click += new EventHandler(this.btnBrowseFolder_Click);
 
+            // 
             // label6 (Destination Folder)
+            // 
             this.label6.AutoSize = true;
             this.label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             this.label6.Location = new Point(20, 300);
@@ -283,7 +309,9 @@ namespace CodeToTxt
             this.label6.TabIndex = 14;
             this.label6.Text = "Destination Folder:";
 
+            // 
             // txtOutputPath
+            // 
             this.txtOutputPath.Location = new Point(260, 300);
             this.txtOutputPath.Margin = new Padding(6, 7, 6, 7);
             this.txtOutputPath.Name = "txtOutputPath";
@@ -291,7 +319,9 @@ namespace CodeToTxt
             this.txtOutputPath.Size = new Size(645, 39);
             this.txtOutputPath.TabIndex = 6;
 
+            // 
             // btnBrowseOutput
+            // 
             this.btnBrowseOutput.Location = new Point(910, 290);
             this.btnBrowseOutput.Margin = new Padding(6, 7, 6, 7);
             this.btnBrowseOutput.Name = "btnBrowseOutput";
@@ -301,7 +331,9 @@ namespace CodeToTxt
             this.btnBrowseOutput.UseVisualStyleBackColor = true;
             this.btnBrowseOutput.Click += new EventHandler(this.btnBrowseOutput_Click);
 
+            // 
             // label7 (Ignore .txt)
+            // 
             this.label7.AutoSize = true;
             this.label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             this.label7.Location = new Point(20, 360);
@@ -311,7 +343,9 @@ namespace CodeToTxt
             this.label7.Text = "Ignore .txt:";
             this.label7.Click += new EventHandler(this.label7_Click);
 
+            // 
             // txtIgnoreFilePath
+            // 
             this.txtIgnoreFilePath.Location = new Point(170, 360);
             this.txtIgnoreFilePath.Margin = new Padding(6, 7, 6, 7);
             this.txtIgnoreFilePath.Name = "txtIgnoreFilePath";
@@ -319,7 +353,9 @@ namespace CodeToTxt
             this.txtIgnoreFilePath.Size = new Size(645, 39);
             this.txtIgnoreFilePath.TabIndex = 18;
 
+            // 
             // btnBrowseIgnore
+            // 
             this.btnBrowseIgnore.Location = new Point(830, 350);
             this.btnBrowseIgnore.Margin = new Padding(6, 7, 6, 7);
             this.btnBrowseIgnore.Name = "btnBrowseIgnore";
@@ -329,7 +365,9 @@ namespace CodeToTxt
             this.btnBrowseIgnore.UseVisualStyleBackColor = true;
             this.btnBrowseIgnore.Click += new EventHandler(this.btnBrowseIgnore_Click);
 
+            // 
             // btnSelectAll
+            // 
             this.btnSelectAll.Location = new Point(20, 420);
             this.btnSelectAll.Margin = new Padding(6, 7, 6, 7);
             this.btnSelectAll.Name = "btnSelectAll";
@@ -339,7 +377,9 @@ namespace CodeToTxt
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new EventHandler(this.btnSelectAll_Click);
 
+            // 
             // btnDeselectAll
+            // 
             this.btnDeselectAll.Location = new Point(180, 420);
             this.btnDeselectAll.Margin = new Padding(6, 7, 6, 7);
             this.btnDeselectAll.Name = "btnDeselectAll";
@@ -350,10 +390,38 @@ namespace CodeToTxt
             this.btnDeselectAll.Click += new EventHandler(this.btnDeselectAll_Click);
 
             // 
+            // chkIncludeFileStructure
+            // 
+            this.chkIncludeFileStructure.AutoSize = true;
+            this.chkIncludeFileStructure.Location = new Point(350, 420);
+            this.chkIncludeFileStructure.Margin = new Padding(6, 7, 6, 7);
+            this.chkIncludeFileStructure.Name = "chkIncludeFileStructure";
+            this.chkIncludeFileStructure.Size = new Size(327, 36);
+            this.chkIncludeFileStructure.TabIndex = 24;
+            this.chkIncludeFileStructure.Text = "Include Folder Hierarchy";
+            this.chkIncludeFileStructure.UseVisualStyleBackColor = true;
+
+            // 
+            // chkIncludeAllFiles
+            // 
+            this.chkIncludeAllFiles.AutoSize = true;
+            this.chkIncludeAllFiles.Checked = true;
+            this.chkIncludeAllFiles.CheckState = CheckState.Checked;
+            this.chkIncludeAllFiles.Location = new Point(700, 420);
+            this.chkIncludeAllFiles.Margin = new Padding(6, 7, 6, 7);
+            this.chkIncludeAllFiles.Name = "chkIncludeAllFiles";
+            this.chkIncludeAllFiles.Size = new Size(390, 36);
+            this.chkIncludeAllFiles.TabIndex = 25;
+            this.chkIncludeAllFiles.Text = "Include All Files in Folder Hierarchy";
+            this.chkIncludeAllFiles.UseVisualStyleBackColor = true;
+
+            // 
             // bottomPanel controls
             // 
 
+            // 
             // label1 (Max Words/File)
+            // 
             this.label1.AutoSize = true;
             this.label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             this.label1.Location = new Point(20, 30);
@@ -363,7 +431,9 @@ namespace CodeToTxt
             this.label1.TabIndex = 8;
             this.label1.Text = "Max Words/File:";
 
+            // 
             // nudMaxWords
+            // 
             this.nudMaxWords.Location = new Point(230, 30);
             this.nudMaxWords.Margin = new Padding(6, 7, 6, 7);
             this.nudMaxWords.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
@@ -373,7 +443,9 @@ namespace CodeToTxt
             this.nudMaxWords.TabIndex = 7;
             this.nudMaxWords.Value = new decimal(new int[] { 50000, 0, 0, 0 });
 
+            // 
             // btnScan
+            // 
             this.btnScan.BackColor = SystemColors.Highlight;
             this.btnScan.ForeColor = SystemColors.ButtonHighlight;
             this.btnScan.Location = new Point(450, 20);
@@ -398,9 +470,9 @@ namespace CodeToTxt
             this.Name = "Form1";
             this.Text = "Code to Text";
             this.Load += new EventHandler(this.Form1_Load);
+
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxWords)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
     }
 }

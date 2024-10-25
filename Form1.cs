@@ -14,6 +14,9 @@ namespace CodeToTxt
         private const string OutputPathKey = "OutputPath";
         private const string IgnoreFilePathKey = "IgnoreFilePath";
 
+        // Store the filtered files (files displayed in the file list)
+        private List<string> filteredFiles = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -34,17 +37,17 @@ namespace CodeToTxt
             if (chkHtml.Checked) allowedExtensions.Add(".html");
             if (chkCss.Checked) allowedExtensions.Add(".css");
             if (chkJs.Checked) allowedExtensions.Add(".js");
-            if (checkBox1.Checked) allowedExtensions.Add(".cs");
-            if (checkBox2.Checked) allowedExtensions.Add(".py");
+            if (chkCs.Checked) allowedExtensions.Add(".cs");
+            if (chkPy.Checked) allowedExtensions.Add(".py");
             if (chkCshtml.Checked) allowedExtensions.Add(".cshtml");
 
-            var files = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
+            var allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
                 .Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower()))
                 .ToList();
 
             string ignoreFilePath = txtIgnoreFilePath.Text;
             string basePath = txtFolderPath.Text;
-            var filteredFiles = codeScanner.FilterFromIgnoreList(files, ignoreFilePath, basePath);
+            filteredFiles = codeScanner.FilterFromIgnoreList(allFiles, ignoreFilePath, basePath);
 
             foreach (var file in filteredFiles)
             {
@@ -80,8 +83,10 @@ namespace CodeToTxt
             string outputFolderPath = txtOutputPath.Text;
             int maxWords = (int)nudMaxWords.Value;
             string ignoreFilePath = txtIgnoreFilePath.Text;
+            bool includeFileStructure = chkIncludeFileStructure.Checked;
+            bool includeAllFilesInHierarchy = chkIncludeAllFiles.Checked;
 
-            var selectedFiles = fileListBox.CheckedItems.Cast<string>().ToList();
+            List<string> selectedFiles = fileListBox.CheckedItems.Cast<string>().ToList();
 
             if (selectedFiles.Count == 0)
             {
@@ -92,7 +97,16 @@ namespace CodeToTxt
             if (!string.IsNullOrEmpty(outputFolderPath) && Directory.Exists(outputFolderPath))
             {
                 var basePath = txtFolderPath.Text;
-                codeScanner.ScanSelectedFiles(selectedFiles, outputFolderPath, maxWords, ignoreFilePath, basePath);
+                codeScanner.ScanSelectedFiles(
+                    selectedFiles,
+                    filteredFiles, // Pass all files displayed in the file list
+                    outputFolderPath,
+                    maxWords,
+                    basePath,
+                    includeFileStructure,
+                    includeAllFilesInHierarchy
+                );
+
                 MessageBox.Show("Scanning completed successfully!");
                 Process.Start("explorer.exe", outputFolderPath);
             }
@@ -149,12 +163,6 @@ namespace CodeToTxt
             Properties.Settings.Default[OutputPathKey] = txtOutputPath.Text;
             Properties.Settings.Default[IgnoreFilePathKey] = txtIgnoreFilePath.Text;
             Properties.Settings.Default.Save();
-        }
-
-        // Event handler for ItemCheck event of fileListBox
-        private void FileListBox_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            // Optional: Handle item check events if needed
         }
 
         // Event handler for Select All button
