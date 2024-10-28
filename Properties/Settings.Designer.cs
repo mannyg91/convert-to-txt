@@ -58,5 +58,17 @@ namespace CodeToTxt.Properties {
                 this["IgnoreFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CustomFileTypes {
+            get {
+                return ((string)(this["CustomFileTypes"]));
+            }
+            set {
+                this["CustomFileTypes"] = value;
+            }
+        }
     }
 }

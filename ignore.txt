@@ -11,7 +11,7 @@ obj/
 build/
 out/
 target/
-venv/
+venv/  
 
 # Ignore IDE and editor specific files
 .vscode/
@@ -51,8 +51,8 @@ app.config
 appsettings.json
 secrets.json
 *.properties
-*.yml
-*.yaml
+
+
 
 # Ignore other sensitive files
 *.pem
@@ -84,7 +84,6 @@ Global.asax.cs
 *config*
 
 # Ignore sensitive directories
-config/
 secrets/
 
 # Ignore test and documentation files

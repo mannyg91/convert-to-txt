@@ -13,6 +13,7 @@ namespace CodeToTxt
         private const string FolderPathKey = "FolderPath";
         private const string OutputPathKey = "OutputPath";
         private const string IgnoreFilePathKey = "IgnoreFilePath";
+        private const string CustomFileTypesKey = "CustomFileTypes";
 
         // Store the filtered files (files displayed in the file list)
         private List<string> filteredFiles = new List<string>();
@@ -40,6 +41,19 @@ namespace CodeToTxt
             if (chkCs.Checked) allowedExtensions.Add(".cs");
             if (chkPy.Checked) allowedExtensions.Add(".py");
             if (chkCshtml.Checked) allowedExtensions.Add(".cshtml");
+
+            // Get custom extensions from the TextBox
+            var customExtensionsInput = txtCustomFileTypes.Text;
+            if (!string.IsNullOrWhiteSpace(customExtensionsInput))
+            {
+                var customExtensions = customExtensionsInput.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(ext => ext.Trim())
+                    .Where(ext => !string.IsNullOrEmpty(ext))
+                    .Select(ext => ext.StartsWith(".") ? ext : "." + ext)
+                    .ToList();
+
+                allowedExtensions.AddRange(customExtensions);
+            }
 
             var allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
                 .Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower()))
@@ -122,14 +136,16 @@ namespace CodeToTxt
             txtFolderPath.Text = Properties.Settings.Default[FolderPathKey] as string;
             txtOutputPath.Text = Properties.Settings.Default[OutputPathKey] as string;
             txtIgnoreFilePath.Text = Properties.Settings.Default[IgnoreFilePathKey] as string;
+            txtCustomFileTypes.Text = Properties.Settings.Default[CustomFileTypesKey] as string;
+
+            // Populate the file list if the folder path is already set
+            if (!string.IsNullOrEmpty(txtFolderPath.Text))
+            {
+                PopulateFileList();
+            }
         }
 
         private void chkHtml_CheckedChanged(object sender, EventArgs e)
-        {
-            PopulateFileList();
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             PopulateFileList();
         }
@@ -156,12 +172,13 @@ namespace CodeToTxt
             // Optional: Add any action if needed
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void Form1_FormClosing(object? sender, FormClosingEventArgs e)
         {
             // Save paths
             Properties.Settings.Default[FolderPathKey] = txtFolderPath.Text;
             Properties.Settings.Default[OutputPathKey] = txtOutputPath.Text;
             Properties.Settings.Default[IgnoreFilePathKey] = txtIgnoreFilePath.Text;
+            Properties.Settings.Default[CustomFileTypesKey] = txtCustomFileTypes.Text;
             Properties.Settings.Default.Save();
         }
 
@@ -181,6 +198,12 @@ namespace CodeToTxt
             {
                 fileListBox.SetItemChecked(i, false);
             }
+        }
+
+        // Event handler for Custom File Types TextBox
+        private void txtCustomFileTypes_TextChanged(object sender, EventArgs e)
+        {
+            PopulateFileList();
         }
     }
 }

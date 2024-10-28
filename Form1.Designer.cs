@@ -38,6 +38,8 @@ namespace CodeToTxt
         private Button btnDeselectAll;
         private CheckBox chkIncludeFileStructure;
         private CheckBox chkIncludeAllFiles;
+        private Label labelCustomTypes;
+        private TextBox txtCustomFileTypes;
 
         /// <summary>
         ///  Clean up any resources being used.
@@ -87,6 +89,8 @@ namespace CodeToTxt
             this.btnDeselectAll = new Button();
             this.chkIncludeFileStructure = new CheckBox();
             this.chkIncludeAllFiles = new CheckBox();
+            this.labelCustomTypes = new Label();
+            this.txtCustomFileTypes = new TextBox();
 
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxWords)).BeginInit();
             this.SuspendLayout();
@@ -105,6 +109,8 @@ namespace CodeToTxt
             this.topPanel.Controls.Add(this.chkCs);
             this.topPanel.Controls.Add(this.chkPy);
             this.topPanel.Controls.Add(this.chkCshtml);
+            this.topPanel.Controls.Add(this.labelCustomTypes);
+            this.topPanel.Controls.Add(this.txtCustomFileTypes);
             this.topPanel.Controls.Add(this.label5);
             this.topPanel.Controls.Add(this.txtFolderPath);
             this.topPanel.Controls.Add(this.btnBrowseFolder);
@@ -266,11 +272,52 @@ namespace CodeToTxt
             this.chkCshtml.CheckedChanged += new EventHandler(this.chkHtml_CheckedChanged);
 
             // 
+            // labelCustomTypes
+            // 
+            this.labelCustomTypes.AutoSize = true;
+            this.labelCustomTypes.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            this.labelCustomTypes.Location = new Point(20, 240);
+            this.labelCustomTypes.Name = "labelCustomTypes";
+            this.labelCustomTypes.Size = new Size(220, 32);
+            this.labelCustomTypes.TabIndex = 21;
+            this.labelCustomTypes.Text = "Custom File Types:";
+
+            // 
+            // txtCustomFileTypes
+            // 
+            this.txtCustomFileTypes.Location = new Point(250, 240);
+            this.txtCustomFileTypes.Margin = new Padding(6, 7, 6, 7);
+            this.txtCustomFileTypes.Name = "txtCustomFileTypes";
+            this.txtCustomFileTypes.Size = new Size(300, 39);
+            this.txtCustomFileTypes.TabIndex = 22;
+            this.txtCustomFileTypes.TextChanged += new EventHandler(this.txtCustomFileTypes_TextChanged);
+
+            // Adjust positions of other controls accordingly (move them down if necessary)
+            // For example:
+            this.label5.Location = new Point(20, 290);
+            this.txtFolderPath.Location = new Point(210, 290);
+            this.btnBrowseFolder.Location = new Point(870, 280);
+
+            this.label6.Location = new Point(20, 350);
+            this.txtOutputPath.Location = new Point(260, 350);
+            this.btnBrowseOutput.Location = new Point(910, 340);
+
+            this.label7.Location = new Point(20, 410);
+            this.txtIgnoreFilePath.Location = new Point(170, 410);
+            this.btnBrowseIgnore.Location = new Point(830, 400);
+
+            this.btnSelectAll.Location = new Point(20, 470);
+            this.btnDeselectAll.Location = new Point(180, 470);
+
+            this.chkIncludeFileStructure.Location = new Point(350, 470);
+            this.chkIncludeAllFiles.Location = new Point(700, 470);
+
+            // 
             // label5 (Source Folder)
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            this.label5.Location = new Point(20, 240);
+            this.label5.Location = new Point(20, 290);
             this.label5.Name = "label5";
             this.label5.Size = new Size(179, 32);
             this.label5.TabIndex = 13;
@@ -279,7 +326,7 @@ namespace CodeToTxt
             // 
             // txtFolderPath
             // 
-            this.txtFolderPath.Location = new Point(210, 240);
+            this.txtFolderPath.Location = new Point(210, 290);
             this.txtFolderPath.Margin = new Padding(6, 7, 6, 7);
             this.txtFolderPath.Name = "txtFolderPath";
             this.txtFolderPath.ReadOnly = true;
@@ -289,7 +336,7 @@ namespace CodeToTxt
             // 
             // btnBrowseFolder
             // 
-            this.btnBrowseFolder.Location = new Point(870, 230);
+            this.btnBrowseFolder.Location = new Point(870, 280);
             this.btnBrowseFolder.Margin = new Padding(6, 7, 6, 7);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
             this.btnBrowseFolder.Size = new Size(162, 57);
@@ -303,7 +350,7 @@ namespace CodeToTxt
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            this.label6.Location = new Point(20, 300);
+            this.label6.Location = new Point(20, 350);
             this.label6.Name = "label6";
             this.label6.Size = new Size(233, 32);
             this.label6.TabIndex = 14;
@@ -312,7 +359,7 @@ namespace CodeToTxt
             // 
             // txtOutputPath
             // 
-            this.txtOutputPath.Location = new Point(260, 300);
+            this.txtOutputPath.Location = new Point(260, 350);
             this.txtOutputPath.Margin = new Padding(6, 7, 6, 7);
             this.txtOutputPath.Name = "txtOutputPath";
             this.txtOutputPath.ReadOnly = true;
@@ -322,7 +369,7 @@ namespace CodeToTxt
             // 
             // btnBrowseOutput
             // 
-            this.btnBrowseOutput.Location = new Point(910, 290);
+            this.btnBrowseOutput.Location = new Point(910, 340);
             this.btnBrowseOutput.Margin = new Padding(6, 7, 6, 7);
             this.btnBrowseOutput.Name = "btnBrowseOutput";
             this.btnBrowseOutput.Size = new Size(162, 57);
@@ -336,7 +383,7 @@ namespace CodeToTxt
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            this.label7.Location = new Point(20, 360);
+            this.label7.Location = new Point(20, 410);
             this.label7.Name = "label7";
             this.label7.Size = new Size(142, 32);
             this.label7.TabIndex = 19;
@@ -346,7 +393,7 @@ namespace CodeToTxt
             // 
             // txtIgnoreFilePath
             // 
-            this.txtIgnoreFilePath.Location = new Point(170, 360);
+            this.txtIgnoreFilePath.Location = new Point(170, 410);
             this.txtIgnoreFilePath.Margin = new Padding(6, 7, 6, 7);
             this.txtIgnoreFilePath.Name = "txtIgnoreFilePath";
             this.txtIgnoreFilePath.ReadOnly = true;
@@ -356,7 +403,7 @@ namespace CodeToTxt
             // 
             // btnBrowseIgnore
             // 
-            this.btnBrowseIgnore.Location = new Point(830, 350);
+            this.btnBrowseIgnore.Location = new Point(830, 400);
             this.btnBrowseIgnore.Margin = new Padding(6, 7, 6, 7);
             this.btnBrowseIgnore.Name = "btnBrowseIgnore";
             this.btnBrowseIgnore.Size = new Size(162, 57);
@@ -368,7 +415,7 @@ namespace CodeToTxt
             // 
             // btnSelectAll
             // 
-            this.btnSelectAll.Location = new Point(20, 420);
+            this.btnSelectAll.Location = new Point(20, 470);
             this.btnSelectAll.Margin = new Padding(6, 7, 6, 7);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new Size(150, 40);
@@ -380,7 +427,7 @@ namespace CodeToTxt
             // 
             // btnDeselectAll
             // 
-            this.btnDeselectAll.Location = new Point(180, 420);
+            this.btnDeselectAll.Location = new Point(180, 470);
             this.btnDeselectAll.Margin = new Padding(6, 7, 6, 7);
             this.btnDeselectAll.Name = "btnDeselectAll";
             this.btnDeselectAll.Size = new Size(150, 40);
@@ -393,7 +440,7 @@ namespace CodeToTxt
             // chkIncludeFileStructure
             // 
             this.chkIncludeFileStructure.AutoSize = true;
-            this.chkIncludeFileStructure.Location = new Point(350, 420);
+            this.chkIncludeFileStructure.Location = new Point(350, 470);
             this.chkIncludeFileStructure.Margin = new Padding(6, 7, 6, 7);
             this.chkIncludeFileStructure.Name = "chkIncludeFileStructure";
             this.chkIncludeFileStructure.Size = new Size(327, 36);
@@ -407,7 +454,7 @@ namespace CodeToTxt
             this.chkIncludeAllFiles.AutoSize = true;
             this.chkIncludeAllFiles.Checked = true;
             this.chkIncludeAllFiles.CheckState = CheckState.Checked;
-            this.chkIncludeAllFiles.Location = new Point(700, 420);
+            this.chkIncludeAllFiles.Location = new Point(700, 470);
             this.chkIncludeAllFiles.Margin = new Padding(6, 7, 6, 7);
             this.chkIncludeAllFiles.Name = "chkIncludeAllFiles";
             this.chkIncludeAllFiles.Size = new Size(390, 36);
